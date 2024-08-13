@@ -1,1 +1,635 @@
 
+Final Interview Data File
+•  Q: What is Jenkins and why is it used?
+•	A: Jenkins is an open-source automation server used for continuous integration and continuous delivery (CI/CD). It automates the parts of software development related to building, testing, and deploying, facilitating continuous delivery.
+•	Jenkins is written in Java and Follows Groovy Scripting.
+•	Groovy is Dynamic OOP Language – With Useful features like Java Compatibility and Development Support. 
+•	Jenkins generate test reports(Junit) – By Using Jacoco Plugin.
+•	Supports cross platform. Windows /Linux/ Mac
+Advantages of Jenkins:
+1.	Build failures are cached during the integration stage.
+2.	Notifies the developers about build report status using LDAP (Lightweight Directory Access Protocol) mail server or slack notifications.
+3.	Maven release project is automated with simple steps.
+4.	Easy bug tracking.
+5.	Automatic changes get updated in the build report with notification. Supports Continuous Integration in agile development and test-driven development
+CI Tools:
+1.	GitHub Actions
+2.	Azure DevOps
+3.	CircleCI
+4.	Travis CI
+5.	Bamboo
+6.	GitLab CI/CD
+7.	GoCD
+8.	Bitbucket Pipelines
+9.	Codeship
+10.	Drone CI
+11.	Semaphore
+12.	Buddy
+13.	Buildkite
+14.	GoCD
+15.	CruiseControl
+Where our project output is placed?
+/var/lib/Jenkins/workspace/projectname
+•  Q: How does Jenkins achieve continuous integration?
+•	A: Jenkins achieves continuous integration by automating the build and test process every time code is committed to the repository. It triggers jobs that compile the code, run tests, and provide feedback to developers.
+What is CI?
+Code+Build+Test
+What is CD?
+Dev+QA+Prod
+•  Q: What are Jenkins pipelines?
+•	A: Jenkins pipelines are a suite of plugins that support implementing and integrating continuous delivery pipelines into Jenkins. They define the entire process of building, testing, and deploying code in a script.
+•  Q: How do you secure Jenkins?
+•	A: Jenkins can be secured by configuring security realms and authorization strategies, 
+1.	Using matrix-based security, 
+2.	Enabling SSL, 
+3.	Restricting access to specific IP addresses, and 
+4.	Regularly updating Jenkins and its plugins.
+Q: Build with Parameters:
+We use it to run our pipelines in dev,qa, and prod environments. We give parameters while running our pipelines.
+•  Q: Explain the difference between Declarative and Scripted Pipelines.
+•	A: Declarative pipelines provide a more simplified and structured way to define pipelines using a YAML-like syntax, whereas Scripted pipelines use a more flexible and expressive Groovy-based syntax.
+•  Q: What is the purpose of the Jenkinsfile?
+•	A: The Jenkinsfile is a text file that contains the definition of a Jenkins pipeline. It allows the pipeline to be version-controlled alongside the source code, ensuring consistency and traceability. It uses either Declarative or Scripted syntax to describe the stages and steps for building, testing, and deploying an application. The Jenkinsfile is typically stored in the source code repository.
+•  Q: How do you manage Jenkins plugins?
+•	A: Jenkins plugins can be managed through the Jenkins UI under "Manage Jenkins" > "Manage Plugins", where you can install, update, and remove plugins. It's essential to keep plugins up to date to ensure security and stability.
+•  Q: What is the role of agents in Jenkins?
+•	A: Agents are machines that are configured to execute jobs in Jenkins. They can run on different environments and help distribute the load of running multiple jobs simultaneously.
+•  Q: How can you parallelize jobs in Jenkins?
+•	A: Jobs can be parallelized in Jenkins by using the parallel directive in Declarative Pipelines or by configuring multiple job steps to run concurrently in Scripted Pipelines.
+•  Q: What are Jenkins nodes?
+•	A: Jenkins nodes are individual machines that are part of the Jenkins infrastructure. The master node schedules and dispatches tasks to the agent nodes, which perform the actual work.
+•  Q: How do you back up Jenkins?
+•	A: Jenkins can be backed up by copying the JENKINS_HOME directory, which contains all the job configurations, plugins, and other settings. Regular backups are essential for recovery in case of failures.
+•  Q: What is a Jenkins Blue Ocean?
+•	A: Blue Ocean is a modern, user-friendly interface for Jenkins that simplifies the creation, visualization, and management of pipelines, making CI/CD processes easier to understand and manage.
+•  Q: How do you handle secrets and credentials in Jenkins?
+•	A: Jenkins handles secrets and credentials using the Credentials plugin, which allows you to securely store and use passwords, SSH keys, tokens, and other sensitive information within your pipelines.
+1.	Use role-based access control (RBAC) to manage permissions.
+2.	Secure Jenkins with HTTPS.
+3.	Use security plugins like Role Strategy Plugin.
+4.	Regularly update Jenkins and plugins.
+5.	Configure proper access controls for build agents.
+6.	Use credentials plugins to manage sensitive data securely.
+How can we secure Jenkins Server?
+To secure Jenkins, implement role-based access control, use SSL for encrypted communication, integrate with LDAP or Active Directory for authentication, regularly update Jenkins and plugins, enable CSRF protection, and use a reverse proxy for added security.
+CSRF (Cross-Site Request Forgery) protection is a security measure to prevent unauthorized It ensures that requests made to a web application are from authenticated users by using tokens that are difficult for attackers to forge.
+•  Q: Explain how Jenkins integrates with Docker.
+•	A: Jenkins integrates with Docker through the Docker plugin, which allows Jenkins to build and deploy Docker containers, run Jenkins agents inside containers, and use Docker as a tool in the build process.
+•  Q: What is a Jenkins Shared Library?
+•	A: A Jenkins Shared Library is a collection of reusable Groovy scripts that can be used across multiple pipelines. It promotes code reuse and consistency across different Jenkins jobs.
+•  Q: How do you implement a Jenkins Multibranch Pipeline?
+•	A: A Multibranch Pipeline automatically creates a pipeline for each branch in a repository, using a Jenkinsfile in each branch to define the pipeline. This allows for branch-specific build and test processes.
+•  Q: What is the role of webhooks in Jenkins?
+•	A: Webhooks are used to trigger Jenkins jobs automatically when changes are made in a version control system like GitHub or GitLab, enabling continuous integration workflows.
+•  Q: How do you configure Jenkins to run tests on multiple environments?
+•	A: Jenkins can run tests on multiple environments by setting up different agents configured for specific environments or by using Docker containers to simulate various environments within the same agent.
+•	To configure Jenkins to run tests on multiple environments, use multi-branch pipelines or matrix projects. Define different stages for each environment, specify the environment-specific parameters, and use Jenkins agents or labels to direct the builds to the appropriate environments
+•  Q: Explain the concept of Jenkins Job DSL.
+•	A: Jenkins Job DSL allows you to define jobs programmatically using a Groovy-based DSL. This enables the creation, modification, and management of jobs through code, promoting consistency and version control.
+•  Q: How do you ensure high availability in Jenkins?
+•	A: High availability in Jenkins can be achieved by:
+1.	Setting up a Jenkins cluster with multiple master nodes and agent nodes
+2.	Using load balancers
+3.	Employing backup and restore strategies.
+•  Q: How do you handle Jenkins job failures?
+•	A: Jenkins job failures can be handled by:
+1.	Implementing retry mechanisms
+2.	Configuring post-build actions to notify stakeholders
+3.	Analyzing logs for debugging
+4.	Using the Build Failure Analyzer plugin for insights.
+5.	We can also use try-catch blocks in Scripted pipelines to catch and handle errors.
+•  Q: What are Jenkins build triggers?
+•	A: Jenkins build triggers are configurations that automatically start jobs based on specific events, such as code commits, scheduled times (Build Periodically), completion of other jobs, or manual initiation. 
+•	Webhooks, Poll SCM , Build Periodically, Build with parameters etc
+•  Q: How do you integrate Jenkins with other tools?
+•	A: Jenkins integrates with other tools through plugins. For example, you can integrate with GitHub for version control, SonarQube for code quality analysis, Slack for notifications, and JIRA for issue tracking.
+•  Q: What is the Jenkins CLI?
+•	A: The Jenkins Command Line Interface (CLI) allows users to interact with Jenkins from the command line, enabling the automation of various tasks such as job creation, build triggering, and configuration management.
+•  Q: How do you monitor Jenkins performance?
+•	A: Jenkins performance can be monitored using the Monitoring plugin, which provides insights into system health, job execution times, resource usage, and other metrics to identify and address bottlenecks.
+•  Q: Explain the concept of artifact management in Jenkins.
+•	A: Artifact management in Jenkins involves storing and managing build artifacts (compiled code, libraries, etc.) using tools like Nexus or Artifactory. Jenkins can upload these artifacts to the repository for versioning and distribution.
+•  Q: How do you handle configuration management in Jenkins?
+•	A: Configuration management in Jenkins can be handled using tools like Ansible, Chef, or Puppet to ensure that Jen¬¬kins and its jobs are consistently configured across different environments.
+•  Q: What is the Jenkins Job Builder?
+•	A: Jenkins Job Builder (JJB) is a tool that simplifies the creation and management of Jenkins jobs using YAML files, allowing for job configuration as code and easy version control.
+•  Q: How do you set up a Jenkins pipeline for a microservices architecture?
+•	A: Setting up a Jenkins pipeline for a microservices architecture involves:
+1.	Defining individual pipelines for each microservice
+2.	Using shared libraries for common tasks
+3.	Oorchestrating the deployment and integration of services.
+•  Q: What are the best practices for managing Jenkins plugins?
+•	A: Best practices for managing Jenkins plugins include:
+1.	Regularly updating plugins
+2.	Reviewing plugin compatibility
+3.	Using only necessary plugins to avoid bloat
+4.	Testing plugin updates in a staging environment before production.
+Jenkins Integration with Other DevOps Tools require some plugins:
+•	Nexus Platform Plugin – for Nexus
+•	Knife Plugin: Integrates Jenkins with Chef by using the knife command to interact with Chef servers.
+•	Puppet Enterprise Pipeline Plugin: Integrates Jenkins with Puppet Enterprise, allowing you to trigger Puppet runs and manage Puppet nodes.
+•	Ansible Plugin: Integrates Jenkins with Ansible, allowing you to run Ansible playbooks as part of Jenkins jobs.
+
+Most Important Plugins in Jenkins:
+1.	Pipeline Plugin: Enables defining and executing build, test, and deployment pipelines as code using Jenkinsfiles.
+2.	Blue Ocean: Provides a modern and user-friendly interface for managing Jenkins pipelines.
+3.	Git Plugin: Integrates Jenkins with Git repositories for source control.
+4.	Maven Integration Plugin: Facilitates building projects with Apache Maven.
+5.	Docker Pipeline Plugin: Enables the use of Docker containers within Jenkins pipelines.
+6.	Credentials Binding Plugin: Allows securely managing and using credentials in Jenkins jobs.
+7.	Email Extension Plugin: Enhances email notifications for build results.
+8.	Slack Notification Plugin: Sends build notifications to Slack channels.
+9.	JUnit Plugin: Parses and publishes JUnit test results.
+10.	SSH Agent Plugin: Manages SSH keys for secure communications with remote servers.
+11.	Parameterized Trigger Plugin: Allows triggering builds with parameters.
+12.	SonarQube Plugin: Integrates Jenkins with SonarQube for code quality analysis.
+13.	Artifactory Plugin: Integrates Jenkins with JFrog Artifactory for artifact management.
+Enlist the Monitoring Plugins in Jenkins:
+•  Monitoring Plugin:
+•	Provides various metrics about Jenkins, including memory usage, executor status, and queue length
+•	 Prometheus Plugin:Exposes Jenkins metrics in a format consumable by Prometheus, enabling robust monitoring and alerting.
+•	 New Relic Plugin:Integrates Jenkins with New Relic, allowing you to monitor Jenkins performance and health in the New Relic dashboard.
+•	Datadog Plugin:Integrates Jenkins with Datadog for comprehensive monitoring and alerting on Jenkins performance metrics.
+•	 Nagios Plugin:Sends Jenkins build and job status notifications to Nagios, enabling infrastructure monitoring and alerting.
+•	ElasticSearch Plugin:Integrates Jenkins with ElasticSearch, allowing you to index and analyze Jenkins logs and metrics.
+How do you trigger a Jenkins pipeline? A: Jenkins pipelines can be triggered in various ways, including:
+•	SCM changes (e.g., Git commits)
+•	Scheduled (e.g., cron jobs)
+•	Manual triggers
+•	Webhooks (e.g., from GitHub, Bitbucket)
+•	Upstream builds
+How do you handle secrets in Jenkins pipelines? A: Secrets in Jenkins pipelines can be managed using the Credentials plugin. Secrets are stored securely in Jenkins and can be referenced in the pipeline using the credentials step or environment variables.
+Explain the use of post in a Jenkins Declarative pipeline. A: The post section in a Jenkins Declarative pipeline defines actions that are run at the end of the pipeline or stage, based on the outcome (e.g., success, failure, always).
+Difference between Continuous Integration, Continuous Delivery and Continuous Deployment:
+•	CICoding, Building, UnitTesting ,Staging/Integration,Acceptance Testing [All AUto]
+•	Continuous Delivery   Coding, Building, UnitTesting ,Staging/Integration,Acceptance Testing [All AUto] + Manual Deployment
+•	Continuous Deployment  Coding, Building, UnitTesting ,Staging/Integration,Acceptance Testing [All AUto] + Auto Deployment
+
+
+
+
+
+
+Docker Interview Questions and Answers
+Benefits of Docker:
+1.	Consistency
+2.	Isolation
+3.	Efficiency
+4.	Scalability
+Docker Components:
+Docker is composed of several components that work together to enable the creation, deployment, and management of containerized applications. The main components of Docker are:
+Docker components include the Docker Client, API, Daemon, Images,
+Containers, and Registry. The Client communicates with the Daemon,
+which builds, runs, and manages Containers using Images.
+•	Docker Engine: The core component of Docker that runs and manages Docker containers on a host system.
+•	Docker Hub: A public registry that stores and distributes Docker images.
+•	Docker CLI: A command-line interface that allows users to interact with Docker and manage containers, images, and other resources.
+•	Docker Compose: A tool for defining and running multi-container Docker applications.
+•	Docker Swarm: A native clustering and orchestration solution for Docker that enables the deployment and management of containerized applications across multiple hosts.
+•	Docker Registry: A tool for storing and distributing Docker images, either publicly or privately.
+What command can you run to export a docker image as an archive ?
+To export a Docker image as an archive, you can use the “docker save” command followed by the image name and pipe it to the “gzip” utility to compress the output. The command will create a compressed archive of the image and its dependencies, which can be saved to a file or transferred to another system for import using the “docker load” command.
+docker save -o <exported_name>.tar <container-name>
+Is it possible to remove a paused container from Docker?
+No, it is not possible!
+Difference between Virtualization and Containerization.
+Virtualization uses a hypervisor to create multiple VMs on a host system, each with a separate OS, consuming significant resources. Containers share the host OS, are lightweight, and efficient, making them more scalable. VMs offer higher security with their own OS and kernel, while containers depend on the host's security measures. VMs support diverse OSs, whereas containers are limited to the host's OS and kernel.
+Container Restart Policy:
+1.	Off: The container won't restart if it stops or fails.
+2.	On-failure: The container restarts only if it fails due to an error, not when stopped by the user.
+3.	Unless-stopped: The container restarts automatically unless explicitly stopped by the user.
+4.	Always: The container restarts regardless of failure or being stopped
+docker run -dit --restart [restart-policy-value] [container_name]
+Difference between Image and Layer:
+In Docker, an image is a read-only template used to create containers, consisting of multiple layers that represent filesystem changes. Layers are created by modifying a base image and are stacked to form an image. Images are static once built, while layers can be modified. Images are identified by tags or digests, whereas layers are identified by their content-based SHA256 hash. Images are created from Dockerfiles or registries.
+Docker Volume:
+Volumes can be created using the docker volume command, and they are managed by Docker’s volume drivers, which provide access to a variety of storage backends such as local filesystems, network filesystems, cloud storage, and more.
+Path of Docker Volume = /var/lib/docker/volumes/
+There are several commonly used instructions in a Dockerfile, including:
+1.	FROM: specifies the base image to use for the container.
+2.	RUN: executes commands within the container to install or configure software packages and dependencies.
+3.	COPY: copies files or directories from the host machine to the container.
+4.	ADD: similar to COPY, but also supports downloading files from URLs and extracting archives.
+5.	WORKDIR: sets the working directory for subsequent instructions.
+6.	ENV: sets environment variables within the container.
+7.	EXPOSE: documents the network ports that the container will listen on at runtime.
+8.	CMD: specifies the default command to run when the container starts.
+9.	ENTRYPOINT: specifies the executable that should be run when the container starts, along with any default command line arguments.
+10.	VOLUME: creates a named volume that can be mounted from the host machine or shared between containers.
+How to use docker for multiple application environments?
+The Docker Compose feature can be used in this scenario. By defining multiple services, networks, containers, and volume mappings in a clean and organized manner within a docker-compose file, the command “docker-compose up” can be used to run the application. When dealing with multiple environments such as development, staging, user acceptance testing, or production servers, environment-specific dependencies and processes can be defined in separate docker-compose files named “docker-compose.{environment}.yml”. This enables the application to be set up and run according to the specific environment requirements.
+How ensure that a container 1 runs before container 2 while using docker compose?
+To ensure that container 1 is run before container 2 using Docker Compose, you can specify the dependency of container 2 on container 1 in the docker-compose file using the “depends_on” option. This will ensure that container 1 is started and ready before container 2 begins to execute.
+How Will you reduce the size of the Docker image?
+Optimise your Docker images by:
+- Using multi-stage builds to include only necessary artefacts.
+- Choosing lightweight base images. 🪶
+- Minimising layers by chaining commands and cleaning up.
+- Removing unnecessary files and caches.
+Can you please tell me about the gitflow or branching and merging strategy ?
+Developer gets the code by creating the feature branch , work with the code,and test the code in the feature branch by committing the code or by running the pipeline to check either his artifacts Is building properly or not.All of this done before he creates a PR.After that he sends the PR, Senior DevOps review the code and after the approval PR is accepted and code is merged to the master branch. 
+Have you worked on any cost optimization project?
+Have you created a cluster?
+Try to be certify in Terraform and Kubernets and Docker
+User and Group Permissions :
+How to create and mount new file systems in linux?
+•  Create Partition: fdisk or parted.
+•  Format: mkfs command to create a file system.
+•  Mount Point: mkdir to create the directory.
+•  Mount: mount command to attach the file system.
+•  Persistent Mount: Update /etc/fstab for automatic mounting at boot.
+List existing partitions:  sudo fdisk -l
+Create a new partition:  sudo fdisk /dev/sdX
+Create a File System:
+For xfs file system:     sudo mkfs.xfs /dev/sdX1
+For ext4 file system:   sudo mkfs.ext4 /dev/sdX1
+For Other File Systems: sudo mkfs.btrfs /dev/sdX1
+sudo mkfs.vfat /dev/sdX1
+Create a Mount Point:  sudo mkdir /mnt/my_mount_point
+Mount the File System: sudo mount /dev/sdX1 /mnt/my_mount_point
+Verify the Mount: df -h
+Make the Mount Permanent (Optional):
+Edit /etc/fstab: sudo nano /etc/fstab
+Add an entry:  /dev/sdX1 /mnt/my_mount_point ext4 defaults 0 2
+What is the difference between yum and apt?
+In Ubuntu apt, in RHEL it is yum.
+Difference between vmstat and netstat?
+Netstat  network info. Provides information about network connections, routing tables, interface statistics, and protocol statistics. To monitor network connections and diagnose network-related issues.
+Vmstat  virtual memory and cpu stats. Provides information about system performance, focusing on memory, processes, paging, block I/O, and CPU activity. To monitor system resources and performance.
+If my Linux server is unable to access the internet what can be the issues?
+1.	Network Configuration: Incorrect IP settings: Check /etc/network/interfaces or nmcli.
+2.	Misconfigured DNS: Verify /etc/resolv.conf.
+3.	Firewall Rules: Blocked outbound traffic: Inspect iptables or firewalld rules.
+4.	Gateway Issues: Incorrect default gateway: Verify with ip route or netstat -rn.
+5.	Network Interface: Down or misconfigured: Check with ifconfig or ip a.
+6.	Network Service: Service failure: Ensure NetworkManager or similar service is running.
+7.	Routing Issues: Check routing table: ip route.
+8.	Proxy Settings: Misconfigured proxy: Inspect environment variables or proxy settings.
+9.	ISP or Cloud Provider Issues: Connectivity problems from the provider.
+If you want to know how many hops your network connection is making. Which command you will use?
+traceroute
+Concept of Firewall:
+Control the inbound and outbound traffic. In AWS – SG and NACL is also a type of firwall. 
+Purpose of Subnet Mask:
+A subnet mask is used in IP networking to divide an IP address into a network and host portion, allowing for the creation of subnetworks. It helps determine which part of the IP address identifies the network and which part identifies the host
+Troubleshoot, two devices on the same network but unable to communicate.:
+1.	•  Check IP Addresses: Ensure both devices have unique IP addresses within the same subnet.
+2.	•  Verify Subnet Mask: Confirm both devices have the correct subnet mask.
+3.	•  Check Network Cables: Ensure cables are properly connected and not damaged.
+4.	•  Firewall Settings: Verify that firewalls on both devices are not blocking communication.
+5.	•  Ping Test: Use the ping command to test connectivity between the devices.
+6.	•  Network Configuration: Check for correct network configuration and routes.
+7.	•  Switch/Router Issues: Ensure switches and routers in the network are functioning correctly.
+8.	NACL Rules – Inbound and outbound traffic
+What is the role of API gateway in the serverless architecture?
+It is the bridge between the End User and the Backend Server. In serverless architecture, an API gateway acts as a single entry point for client requests, managing and routing them to appropriate backend services or functions. It handles tasks like authentication, rate limiting, and request/response transformation.
+How a DevSecOps pipeline looks like? 
+A DevSecOps pipeline integrates security into the DevOps process. It includes stages such as code scanning for vulnerabilities, automated testing, continuous integration (CI), continuous delivery (CD), and deployment. Security checks are embedded throughout, with tools for static and dynamic analysis, dependency checks, and runtime security monitoring, ensuring secure code from development to production.
+1.	Code Commit Stage: SonarQube or Codacy for static code analysis.
+2.	Build Stage: Jenkins with OWASP Dependency-Check for automated security testing. GitLab CI/CD with built-in security scanning features.
+3.	Deployment Stage:Docker Bench Security for container security scanning. Twistlock for container and cloud native security.
+4.	Runtime Monitoring: Prometheus with Grafana for monitoring and alerting.ELK Stack (Elasticsearch, Logstash, Kibana) for logging and monitoring.
+Incorporate these tools into your CI/CD pipeline to maintain a secure DevOps environment.
+For pure Security Oriented:
+•  Code Commit Stage: Integrate static code analysis tools (e.g., SonarQube).
+•  Build Stage: Use automated security testing tools (e.g., Checkmarx, Snyk).
+•  Deployment Stage: Implement container security scanning (e.g., Aqua Security, Clair).
+•  Runtime Monitoring: Employ runtime security monitoring (e.g., Falco, StackRox).
+
+Can you tell me the structure of Dockerfile?
+A Dockerfile is a script with a set of instructions to build a Docker image. It starts with the FROM instruction to specify the base image. Then, you use COPY or ADD to add files to the image. RUN instructions execute commands to install software. ENV sets environment variables, and WORKDIR sets the working directory. EXPOSE specifies the port on which the container will listen. Finally, CMD or ENTRYPOINT provides the command to run the application. Here’s a simple example:
+FROM node:14
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "start"]
+F.A.R.E. C.W.E.C. [FROM,ADD,RUN,ENV,COPY,WORKDIR,EXPOSE,CMD]
+Limiations of Pod Logs? 
+Pod logs can have issues such as:
+1.	Missing Logs: Logs might not appear if the application hasn’t written any logs or if log aggregation is not configured correctly.
+2.	Inconsistent Logs: Logs may be inconsistent due to different log formats or multiple containers writing to the same log.
+3.	Incomplete Logs: Logs might be truncated or incomplete if the log size exceeds the buffer limits or log retention policies.
+4.	Access Issues: You may face permissions or connectivity issues when trying to access logs, particularly if RBAC rules are restrictive.
+5.	Slow Logs Retrieval: Retrieval might be slow if the logging backend is overloaded or if there’s a network latency.
+I want to use terraform in my company. However, I have already created number of EC2 instances. How can you manage the new infra with the already deployed infra using terraform?
+•  Install Terraform: Set up Terraform on your system.
+•  Initialize Project: Run terraform init in a new directory.
+•  Create Configuration: Define your infrastructure in .tf files.
+•  Import Existing Resources: Use terraform import to import existing EC2 instances.
+•  Write Configuration: Match configurations with the existing setup.
+•  Run Commands: Use terraform validate, terraform plan, and terraform apply to manage and update infrastructure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Project Questions:
+Scenario-Based Interview Questions and Answers
+1.	How did you integrate MongoDB in your Kubernetes project?
+o	Answer: I integrated MongoDB using a StatefulSet to ensure persistent storage and unique network identities for each pod. I created PersistentVolume and PersistentVolumeClaim resources for data storage and a headless Service to manage DNS for the MongoDB replica set. Finally, I used kubectl exec to initialize the replica set and load initial data.
+2.	How did you handle Pods in your Kubernetes deployment?
+o	Answer: Pods were managed using Deployments and StatefulSets. Deployments were used for stateless applications, allowing easy scaling and updates. StatefulSets were employed for MongoDB to maintain stable network identities and persistent storage. I also used readiness and liveness probes to ensure the health of the pods.
+What is the difference between Persistent volume and persistent volume claim?
+3.	A Persistent Volume (PV) in Kubernetes is a storage resource provisioned by an administrator. A Persistent Volume Claim (PVC) is a request by a user for storage, binding to an available PV that meets the claim's requirements.
+4.	How did you manage the downtime during application deployment?
+Answer: I utilized Kubernetes rolling updates for Deployments, which update pods incrementally to ensure zero downtime. For MongoDB, I used StatefulSets which handle pod scaling and updates while maintaining data integrity. Additionally, readiness probes ensured that traffic was only sent to fully initialized pods.
+What is the difference between stateless and statefull applications?
+Stateless applications treat each request independently, with no memory of previous interactions. Stateful applications, however, retain data across sessions, allowing them to remember user interactions or data between requests.
+What is the difference between statefulset and deployment?
+A StatefulSet in Kubernetes is used for managing stateful applications, ensuring stable identities and persistent storage for each pod. A Deployment is used for stateless applications, focusing on scaling and updating pods without maintaining state.
+What are environment variables in DeVops? How we use it and why we use it?
+Environment variables in DevOps are key-value pairs used to configure applications across different environments (e.g., development, staging, production). They allow you to manage configuration settings like API keys, database URLs, and environment-specific values. Using environment variables ensures consistency, security, and flexibility in deploying and managing applications.
+What are Kubernetes Secrets?
+A Kubernetes Secret is an object used to store sensitive information like passwords, tokens, or keys. It allows you to securely manage and distribute confidential data to pods without exposing it directly in the application code or configuration files.
+5.	How did you ensure data redundancy and high availability for MongoDB?
+o	Answer: I configured MongoDB with a replica set, consisting of multiple MongoDB instances. This setup ensures data redundancy and high availability by replicating data across different nodes. In case of a node failure, the remaining nodes can take over seamlessly.
+6.	What steps did you take to secure sensitive information in your Kubernetes project?
+o	Answer: Sensitive information, such as database credentials, was stored in Kubernetes Secrets. These secrets were referenced in the application pods through environment variables, ensuring that sensitive data was not exposed in the application code or configuration files.
+7.	How did you manage storage for your stateful applications?
+o	Answer: Persistent storage was managed using PersistentVolume (PV) and PersistentVolumeClaim (PVC) resources. PVs were provisioned with storage classes, and PVCs were used to request storage for MongoDB pods. This ensured that data persisted even if the pods were rescheduled.
+8.	How did you handle external access to your application services?
+o	Answer: I used Kubernetes Services of type LoadBalancer to expose the application externally. This provided a stable endpoint for accessing the application. The LoadBalancer automatically directed incoming traffic to the appropriate pod instances.
+9.	How did you verify the DNS setup for your MongoDB StatefulSet?
+o	Answer: I created a temporary network utilities pod using the praqma/network-multitool image. Inside this pod, I ran nslookup commands to verify that the DNS records for each MongoDB pod were correctly created and resolvable within the cluster.
+10.	What strategies did you use for container orchestration and management?
+o	Answer: I leveraged Kubernetes for container orchestration, which provided robust features for deploying, scaling, and managing containerized applications. Key resources used included Deployments for stateless applications, StatefulSets for stateful applications, and Services for load balancing and external access.
+11.	How did you ensure the scalability of your web application?
+o	Answer: Scalability was ensured through Kubernetes' horizontal pod autoscaling. For the frontend and backend services, I defined Deployment resources that allowed Kubernetes to automatically scale the number of pods based on CPU utilization or other metrics.
+12.	How did you perform health checks on your application pods?
+o	Answer: Health checks were implemented using Kubernetes liveness and readiness probes. Liveness probes ensured that any unresponsive pods were restarted, while readiness probes ensured that only fully initialized and ready pods received traffic.
+13.	How did you handle the initial data load into the MongoDB replica set?
+o	Answer: The initial data load was handled by executing MongoDB commands through kubectl exec into the primary MongoDB pod. This involved using rs.initiate() to initialize the replica set and MongoDB queries to insert the initial voting data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+What is SSO?
+Single sign-on is an authentication scheme that allows a user to log in with a single ID to any of several related, yet independent, software systems. True single sign-on allows the user to log in once and access services without re-entering authentication factors.
+How can we get a specific details of specific commit on a specific date in git?
+1.	git log --since="YYYY-MM-DD" --until="YYYY-MM-DD"
+2.	git show <commit-hash>
+3.	git show $(git log --since="2023-07-01" --until="2023-07-02" --format="%H" -n 1)
+What is the difference between permission policy and normal boundary?
+In AWS, a permission policy defines the actions and resources a user or role can access, while a permission boundary sets a limit on the maximum permissions an entity can have, restricting its permissions further.
+An AWS IAM policy regulates access to AWS resources to help ensure that only authorized users have access to specific digital assets. Permissions defined within a policy either allow or deny access for the user to perform an action on a specific resource
+On which AWS Services you worked?
+EC2,S3, VPC, Internet Gateway, NAT, Application Load Balancer, 
+You have to Work on and Learn as much as you can:
+RDS, Route53, AWS Lambda, AWS codecommit, codebuild, etc
+I have 255 IP Address and I have created multiple Resources. Now I have more resources,and insufficient IP Addresses. What I have to do now?
+First of all check, unused network interfaces, delete them and can be used.
+1.	Expand your VPC CIDR block
+2.	Use multiple subnets
+3.	Release unused IP addresses
+4.	Consider using private IP addressing
+5.	Implement NAT Gateways or NAT Instances
+6.	VPC Peering or Transit Gateway
+What are gitlab runners?
+GitLab Runner is an application that executes jobs in your CI/CD pipeline. It works with GitLab CI to run tests, build applications, and deploy code based on the configuration in your .gitlab-ci.yml file.They are more chargeable and we can create our own.
+How can we create our own gitlab runners using aws or azure?
+To create your own GitLab Runner on AWS or Azure, launch a VM instance, install Docker, and register the runner with your GitLab instance. Configure the runner using the registration token provided by GitLab and set up necessary permissions.
+What are git conflicts and how can we fix it?
+Conflict will be opened in the editor and we will manually decide which is correct and which we want
+
+Management of tf file in Terraform:
+Managing Terraform configurations can be done using a single main.tf file for simpler setups or breaking it into module-wise .tf files for more complex, scalable, and maintainable infrastructures. Modules promote reusability and better organization.
+What is module-wise tf file?
+A module-wise .tf file in Terraform is a structured way to organize code by grouping related resources into modules. This approach enhances code reusability, maintainability, and clarity, allowing for better management of complex infrastructure configurations.
+Difference between versioning and state locking in aws
+Versioning in AWS refers to maintaining multiple versions of objects in S3 buckets, allowing for recovery and archiving. State locking in Terraform prevents simultaneous updates to state files, ensuring consistency and preventing conflicts during infrastructure changes.
+WHY WE store state file in aws s3 bucket not on local machine?
+Storing the state file in an AWS S3 bucket, rather than on a local machine, ensures centralization, accessibility for team collaboration, and integration with state locking mechanisms, thereby enhancing security, consistency, and preventing conflicts in infrastructure management.
+how we export the logs from grafana and promethus?
+To export logs from Grafana, use the "Explore" feature to query and download logs. For Prometheus, you can query logs using the PromQL language via the web interface or API, then export the results in various formats like CSV or JSON.
+If someone has deleted the data from s3 bucket accidently, how you will recover it?
+By using versioning, 
+To recover deleted data from an S3 bucket, enable S3 Versioning and use the previous versions of the objects. If Versioning is enabled, locate and restore the deleted object versions. Also, enable S3 Lifecycle policies for better data protection.
+what strategies you will use for cost optimization in infrastructure deployment in AWS?
+•  Reserved Instances and Savings Plans: Commit to long-term usage for discounts.
+•  Auto-scaling: Match resources to actual demand.
+•  Spot Instances: Utilize unused capacity at reduced rates.
+•  Right-sizing: Regularly analyze and adjust instance types and sizes.
+•  Storage Optimization: Implement S3 lifecycle policies, and use S3 Intelligent-Tiering.
+•  Monitoring and Reporting: Use AWS Cost Explorer and Trusted Advisor for insights and recommendations.
+What is reserved Instance?
+Reserved Instances are a billing discount offered by AWS where you commit to using specific instance types for a one- or three-year term, in exchange for a reduced hourly rate.
+WHAT IS S3 Intelligent-Tiering?
+
+New company has hired you as a DevOps Engineer. What will be your first 6 months plan?
+1.	Understand Architecture of the company
+2.	What the new things I can add with my skills 
+3.	Will try to meet the requirements and expectations of the company from myside 
+We have to provide an infra?
+1.	Either the application is internal or external 
+2.	How much traffic is going to there?
+3.	e-commerce application like traffic?
+4.	How much storage we need? Pay as you go Go for minimum, we can increase but we can not decrease
+Without downtime how can we increase or decrease the servers?
+To scale servers in AWS without downtime, use Auto Scaling groups with load balancers. Adjust the desired capacity to increase or decrease instances automatically, ensuring continuous availability and optimal performance without disrupting services.
+What is S3 Intelligent Tiering?
+S3 Intelligent-Tiering is an Amazon S3 storage class that automatically moves data between two access tiers—frequent access and infrequent access—based on changing access patterns, optimizing storage costs without performance impact or operational overhead.
+Without downtime how can we increase or decrease the servers IN aws as we have already deployed EC2 instances but don't have auto scalling groups configuration. Now We waant to increase servers how can we do that?? 
+You can manually launch additional EC2 instances through the AWS Management Console, CLI, or API. Use Elastic Load Balancing (ELB) to distribute traffic among the instances, ensuring seamless integration without downtime.
+If there is already infra, we will check the traffic graph and will analyse either the cpu or mempry power is more required or not. We can select instance type based on these graphs. 
+What Is status check in AWS EC2 Machine?
+EC2 underlined infra connectivity with the machine and software installation (Instance level) and utilization .
+If the status check is ½  Either stop the machine or reboot the machine.
+What is the difference between Public IP Address and Elastic IP Address?
+A Public IP Address is automatically assigned to an AWS instance and changes if the instance is stopped or restarted. An Elastic IP Address is a static, persistent public IP that you can associate with an instance and retain through restarts.
+what is the difference between AMI and snapshot?
+An Amazon Machine Image (AMI) is a template for creating instances with pre-configured OS, applications, and settings. It is the complete back-up of EC2.  A snapshot is a backup of an Amazon EBS volume, capturing its state at a specific point in time for data recovery or replication.
+How to migrate EC2 from one account toother account?
+To migrate an EC2 instance from one AWS account to another, create an Amazon Machine Image (AMI) of the instance, share the AMI with the target account, and then use the shared AMI to launch a new instance in the target account.
+To migrate an EC2 instance from one account to another in a different region, follow these steps:
+1.	Create an AMI from the EC2 instance.
+2.	Share the AMI with the target account.
+3.	Copy the shared AMI to the target region.
+4.	Launch a new instance from the copied AMI in the target account.
+Difference between virtualization and containerization ?
+Virtualization uses hypervisors to create multiple virtual machines (VMs) on a single physical server, each with its own OS. Containerization uses containers to package applications and their dependencies, sharing the host OS kernel, leading to lightweight and efficient deployment.
+Does the data get lost, if the Docker container exits?
+No. any data which application will write to disk can get well preserved in its container until we will explicitly delete the container and the file system will persist even after the container halts.
+Docker is advantageous in following way
+1.	It is lightweight.
+2.	More efficient in terms of resources.
+3.	It uses very fewer resources and also the underlying host kernel rather than developing its hypervisor
+Can JSon be used instead of yaml for compose file?
+Answer: Yes, JSon can be used instead of yaml for compose file
+What is the purpose of Docker_Host?
+Answer: It will contain container, images, and Docker daemon. It will offer a complete environment to execute and run application.
+Docker LifeCycle:
+1.	Create a Container.
+2.	Run the created Container.
+3.	Pause the processes running inside the Container.
+4.	Unpause the processes running inside the Container.
+5.	Start the Container, if exists in a stopped state.
+6.	Stop the Container as well as the running processes.
+7.	Restart the Container as well as the running processes.
+8.	Kill the running Container.
+9.	Destroy the Container, only if it exists in a stopped state.
+
+Some common Docker commands include 
+1.	docker run (to run a container) 
+2.	docker build (to build an image), 
+3.	docker pull (to pull an image from a registry), 
+4.	docker push (to push an image to a registry), 
+5.	docker ps (to list running containers), 
+6.	docker images (to list available images), 
+7.	docker stop (to stop a container), and 
+8.	docker rm (to remove a container)
+Explain the difference between docker run and docker exec.
+Answer: docker run is used to create and start a new container from an image, while docker exec is used to execute commands [Mostly Linux] inside a running container.
+How can you remove all Docker containers?
+Answer: You can remove all Docker containers by running the command docker rm
+$(docker ps -aq)
+Question 11: Explain the difference between CMD and ENTRYPOINT in a Dockerfile.
+Answer: CMD is used to specify the default command to run when a container starts,
+while ENTRYPOINT is used to specify the executable that will run when the container
+starts. If both are present, ENTRYPOINT will be executed with CMD as its arguments
+
+Question 12: How can you pass arguments to a Dockerfile during the build process?
+Answer: You can use build arguments in a Dockerfile by specifying them with
+the ARG instruction and passing values to them using the --build-arg flag with
+the docker build command.
+Explain the difference between Docker bind mounts and volumes.
+Answer: Docker bind mounts map a host file or directory to a container file or
+directory, allowing the container to access files from the host system. Volumes, on
+the other hand, are managed by Docker and provide persistent storage that can be
+shared among containers and persists even if the container is removed.
+Question 20: How do you define services in a Docker Compose file?
+Answer: Services in a Docker Compose file are defined under the services section
+using YAML syntax, where each service specifies its image, ports, environment
+variables, volumes, and other configuration options.
+Question 21: Explain the difference between docker-compose up and dockercompose start.
+Answer: docker-compose up creates and starts containers for all services defined in
+the Docker Compose file, while docker-compose start starts existing containers that
+were previously created but stopped.
+Question 22: How can you improve Docker container security?
+Answer: You can improve Docker container security by:
+1.	Using official images from trusted sources
+2.	Regularly updating images and containers
+3.	Implementing network segmentation,
+Using(DCT) Docker Content Trust to verify image integrity
+4.	Monitoring container activity.
+Question 23: What is Docker Content Trust (DCT)?
+Answer: Docker Content Trust is a security feature that allows you to verify the
+authenticity and integrity of Docker images. When enabled, DCT uses cryptographic
+signatures to ensure that only trusted images are pulled and run on Docker hosts.
+Question 24: How can you scan Docker images for vulnerabilities?
+Answer: You can scan Docker images for vulnerabilities using tools like Docker
+Security Scanning, Clair, Trivy, or Anchore. These tools analyze the contents of
+Docker images and report any known vulnerabilities present in the image's
+dependencies.
+What type of vulnerabilities can be happened in Docker or Containers?
+Docker images or containers can have vulnerabilities such as outdated software, insecure configurations, exposed secrets, insufficient isolation, privilege escalation, unpatched OS-level vulnerabilities, and insecure network settings, leading to potential attacks and unauthorized access
+Question 22: What are the best practices for Docker container security?
+Answer: Best Practices for Docker container security are:
+1.	Using official images from trusted sources
+2.	Regularly updating images and containers
+3.	Implementing network segmentation,
+Using(DCT) Docker Content Trust to verify image integrity
+4.	Monitoring container activity.
+5.	Avoiding Running containers as a Root User
+6.	Scanning images for vulnerabilities
+Question 31: How can you monitor Docker containers?
+Answer: You can monitor Docker containers using tools like Docker Stats, Docker
+Events, cAdvisor, Prometheus with Grafana, and third-party monitoring solutions.
+These tools provide insights into container resource usage, performance metrics, and
+health status.
+What is Docker image caching?
+Answer: Docker image caching is a mechanism used during the build process to
+speed up subsequent builds by reusing intermediate layers from previous builds.
+When a Dockerfile is built, each instruction produces a layer, and Docker caches
+these layers to avoid rebuilding them if the instruction and its context haven't
+changed.
+What are the different deployment strategies in Docker?
+Answer: Different deployment strategies in Docker include rolling updates, bluegreen deployments, canary deployments, and A/B testing. These strategies enable
+you to deploy application updates with minimal downtime and risk by gradually
+transitioning traffic to new versions
+Rolling Updates: It replaces instances incrementally, ensuring new versions are healthy before proceeding, allowing continuous service availability and minimizing disruptions during updates or deployments.
+Canary Deployment: Canary deployments gradually introduce a new software version to a small subset of users before a full rollout.
+What are some CI/CD tools that support Docker integration?
+Answer: Some CI/CD tools that support Docker integration include Jenkins, GitLab
+CI/CD, Travis CI, CircleCI, TeamCity, and GitHub Actions. These tools provide native
+support for Docker, allowing you to build, test, and deploy applications using Docker
+containers
+What is VPC Architecture?
+A VPC (Virtual Private Cloud) architecture in cloud computing creates an isolated network within a public cloud. It includes subnets, route tables, internet gateways, and security groups, allowing you to manage resources securely and control traffic flow.
+You have an EC2 instance upon which you have hosted your application on apache server, and one is your RDS how will you integrate both? Tell me the steps:
+To integrate an EC2 instance with an RDS database:
+1.	Security Groups: Ensure the EC2 instance’s security group allows outbound connections to the RDS instance’s security group. The RDS security group should permit inbound traffic from the EC2 instance's security group on the database port.
+2.	Database Configuration: On your EC2 instance, update your application’s database configuration to use the RDS endpoint, username, and password.
+3.	Test Connectivity: Verify connectivity from the EC2 instance to RDS using a database client or application.
+4.	Deploy Changes: Restart your application on the EC2 instance to apply the new database settings
+•	•  MySQL: 3306
+•	•  PostgreSQL: 5432
+•	•  Oracle: 1521
+•	•  SQL Server: 1433
+•	•  MongoDB: 27017
+•	•  Redis: 6379
+•	•  MariaDB: 3306 (same as MySQL)
+My Application is running on http and I want to change it to https, how can I do that?
+•	Obtain an SSL/TLS Certificate: Purchase or generate a certificate.
+•	Install the Certificate: Configure your web server (e.g., Apache, Nginx) to use it.
+•	Update Configuration: Change your server settings to listen on port 443 for HTTPS.
+AWS Certificate Manager (ACM) simplifies the provisioning, management, and deployment of SSL/TLS certificates for securing AWS-based websites and applications, automating certificate renewals and integrating with other AWS services.
+If I have s3 and i want to store data on it just for 30 days and after that i want it to be deleted automatically. How can i do that? 
+•  Go to S3 Console.
+•  Select the bucket.
+•  Create a lifecycle rule.
+•  Set expiration to 30 days.
+
+What is Cloud Front?
+Amazon CloudFront is a content delivery network (CDN) service that caches and delivers web content with low latency and high transfer speeds. It improves performance, reduces server load, and enhances security by distributing content globally.
+Difference between Screen and Watch commands:
+The screen command in Linux allows you to create and manage multiple terminal sessions, enabling long-running processes to continue even after disconnecting. The watch command repeatedly executes a command at regular intervals, displaying the output in real-time.
+If I don’t want to interrupt any session – I will use screen command. 
+Watch command 
+watch df-h
+The command watch df -h repeatedly runs df -h every 2 seconds, displaying real-time disk space usage.
+
+If your process is taking too much disk space. And you have deleted the logs of the process still the application is stuck what you have to do now?
+Check the process Id and kill that process. 
+I want to run a specific command at every reboot. How can I do that?
+what is rc.local file?
+The rc.local file is a script in Unix-like systems that runs commands at the end of the boot process. It's often used for custom startup tasks and configurations.
+
+Stickybit command.  Chmod +t 
+What is the default directory in linux, that has by default sticky bit permissions?
+/tmp has the by default sticky bit permissions.
+How can we check the sticky bit permissions?
+T option on the last .
+How to check the run levels in linux?
+runlevels 
+There are 7 run levels. 0-6
+
+
