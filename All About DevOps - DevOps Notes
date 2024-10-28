@@ -1,0 +1,900 @@
+All in all DevOps
+AWS:
+What is 2/2 in AWS? 
+System Check  ==> Checking the hardware of Amazon - Power, Storage etc. 
+If above mentioned things ok - First Check 	==> Solution - Stop your machine 
+ and restart it again. Amazon will change the hardware.
+Instance Check ==> This checks the software and operating system of your instance. It verifies
+ whether the instance's operating system is running properly and if the instance is reachable.
+There are three main categories of AMI:
+•	Community AMIs:
+•	Free to use
+•	Generally, it contains only the OS I
+•	AWS Marketplace AMIs:
+•	pay to use
+•	generally comes packaged with additional licensed software
+•	My AMIs:
+•	AMIs that you can create yourself
+Storages in AWS:
+•	Object Storage: Imagine a library where each book is an object. Each book has a unique ID (like a barcode) and comes with metadata (author, genre, etc.). The books aren’t organized on shelves by title or author but stored in a big warehouse where you just search for the ID to find your book.
+•	File Storage: Think of a filing cabinet. Each folder represents a category, and inside are documents (files). To find a document, you need to know which folder (directory) to look in. It’s a structured, hierarchical system.
+•	Block Storage: Picture a jigsaw puzzle. Each piece (block) is stored separately, and they don’t have to be in any particular order. When you want to view the complete picture (file), your computer puts the pieces together based on their addresses, but they don’t have to be in a specific location.
+•	Block Storage -          OS, DB, 		Mount
+•	File Storage 	Shared Storage, 	Mount
+•	Object Storage	No need to Mount 	S3
+Storage Services in All three Major Cloud:
+Storage Services
+==============
+•	EBS 	==> Elastic Block Store
+•	EFS 		==> Elastic File System 	[Managed Service - Managed NFS] For	LINUX Only
+•	FsX 		==> File Store for Windows [SMB]
+•	S3 		==> Simple Storage SERVICE  ==> Object Storage
+•	To check the storage in aws 
+•	we use the command
+•	lsblk
+
+•	AzureDisk 		Block Store
+•	AzureFile			File Store
+•	AzureBlob		Object tore
+
+•	Google Cloud
+•	-----------------
+•	googlepersistentDisk 	Block
+•	googlefilestore			File
+•	GCS Buckets			Object
+
+How to mount a new volume?
+1.	Create an Additional Volume
+2.	Attach additional EBS Volume to Server
+3.	Format and mount the Volume to the directory.
+4.	Volume should be in the same Availability Zone to attach with the EC2.
+5.	sudo file -s /dev/xvdb
+6.	if Output is: /dev/xvdb: data 
+7.	It means out volume is not the part of file system till now. 
+8.	sudo mkfs.ext4 /dev/xvdb
+9.	Now our volume has been formatted. Now we have to mount it. 
+10.	sudo mount /dev/xvdb /var/lib/Jenkins
+11.	If we want it to be permanently mounted. We have to update in  /etc/fstab
+12.	sudo cp /etc/fstab /etc/fstab.orig
+Can we modify a volume in AWS when it is in use? Yes, we can. We can increase the size but cannot decrease. We can change the type of Volume also.
+Can we attach one EBS Volume with multiple EC2 Instances? Block storage is not a shared storage. Block Storage cannot be shared.  We have to detach the EBS volume first from the first EC2 machine and we have to attach it with the second one.  Anyhow, AWS has introduced MULTI ATTACH EBS VOLUME   
+How to Migrate Instance from one Region to Other?
+Go to Snapshots and copy snapshot.  New popup will be emerged. Select your Rgion and AZ. Copy Snapshot. Go to desired AZ and Region. Create an instance in the desired AZ. Remeber keypairs are region specific also make the new kepair in the desired AZ.
+
+To recover the EC2 Machine key we have be in the same az. Means Recovery Server must be in the same AZ.
+How to recover a SSH Key?
+1.	Create a New EC2 Instance: Launch a new instance in the same Availability Zone as the original.
+2.	Detach the Root Volume: Stop the original instance and detach its root volume.
+3.	Attach to New Instance: Attach this volume to the new instance as a secondary volume.
+4.	Mount the Volume: SSH into the new instance, create a mount point, and mount the detached volume.
+5.	Copy Authorized Keys: Access the mounted volume, navigate to the .ssh directory, and copy the contents of authorized_keys to the new instance's .ssh directory.
+6.	Unmount and Reattach: Unmount the volume and reattach it to the original instance as its root volume.
+7.	Start the Original Instance: Boot the original instance, which should now allow SSH access using the new instance's key.
+How many AWS S3 Buckets can be made in AWS Account by default? 100 Buckets - Soft Limit - It is adjustable. Can be increased. Object limit of AWS S3 Bucket. 5 TB
+Can we mount same file system with multiple servers?
+Yes, we can. In both File and Block we have to mount. Anyhow, in Object Store we don't have to Mount.
+What is the maximum file size in S3 Bucket? 5 TB - It is Hard limit. It cannot be further Increased.
+Public Access of any Object and S3 Bucket in AWS is Enabled or Disabled? It is disabled.
+How to manage Permissions in S3 Bucket? There are two ways to manage permissions in S3. 
+1- ACL - Access Control List - OLD  2- Bucket Policy   - NEW
+Versioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket
+What are S3 access controls? Access controls include IAM policies, bucket policies, and ACLs to manage permissions.
+How can you secure data in S3? Data can be secured using server-side encryption, client-side encryption, and access controls.
+How do you monitor S3 usage and performance? Monitor using Amazon CloudWatch, S3 metrics, and server access logging.
+What is S3 lifecycle management? Lifecycle management automates the transition of objects between storage classes and deletion based on policies
+What are S3 Select and S3 Inventory? S3 Select allows querying of specific data from objects, while S3 Inventory provides a report on objects in a bucket.
+What is the difference between S3 and EBS? S3 is for object storage with web access, while EBS provides block storage for EC2 instances.
+How to Optimize S3? Optimize costs by minimizing data transfer, using lifecycle policies, and selecting appropriate storage classes.
+Storage Classes:
+1.	S3 Standard: For active, frequently accessed data with low latency and high throughput; ideal for critical data storage.
+2.	S3 Standard-IA (Infrequent Access): For infrequently accessed objects; a cheaper option suitable for archival data.
+3.	S3 One Zone-IA: For re-creatable, infrequently accessed data stored in a single AZ; used for standby data center or secondary backups.
+4.	S3 Intelligent-Tiering: Automatically moves data between access tiers based on usage; reduces costs for infrequently accessed data.
+5.	S3 Glacier: Designed for archival data with low storage costs; best for storing old data where retrieval time is not a priority.
+6.	Reduced Redundancy Storage (RRS): Offers less redundancy for non-critical data; suitable for easily recruitable information.
+•	S3 Glacier – Instant Retrieval=For archived data that needs fast restore times in milliseconds; ideal for data requiring immediate access.
+•	S3 Glacier – Flexible Retrieval=For objects with unpredictable restore needs, taking minutes to hours; suitable for less time-sensitive archival data.
+•	S3 Glacier – Deep Archive=For archival data not likely to be restored, with a standard restore time of 12 hours and bulk retrieval of 48 hours; minimum storage duration is 180 days.
+•	S3 Intelligent Tiering=Involves a small monthly fee for monitoring and auto-tiering; automatically moves objects between access tiers based on usage patterns.
+Object Lifecycle Rules:
+Lifecycle rules in Amazon Web Services (AWS) are policies that automate the process of managing the lifecycle of objects stored in Amazon S3 (Simple Storage Service). These rules help reduce storage costs by automatically transitioning objects to less expensive storage classes or deleting them when they are no longer needed.
+Replication Rule:
+Replication in Amazon S3 is a feature that allows you to automatically replicate objects between different buckets in the same or different AWS Regions. This helps to enhance data availability, durability, and compliance. It is used to save our S3 Data for disaster recovery.
+Pre-requisites of Replication Rule:
+•	Versioning should be enabled in both source and destination buckets. 
+•	IAM Role will also be needed here.
+Amazon Snowball is a data transfer service offered by Amazon Web Services (AWS) designed to move large amounts of data into and out of AWS. It helps organizations manage their data migration and transfer challenges by providing a secure, rugged, and portable storage device.
+Amazon Simple Queue Service (Amazon SQS) is a fully managed message queuing service offered by Amazon Web Services (AWS). It enables the decoupling and scaling of microservices, distributed systems, and serverless applications.
+AWS Event Notifications are mechanisms that allow AWS services to notify other services or systems when certain events occur. This enables automated workflows, real-time monitoring, and integration with various AWS services or external systems.
+
+Vpc:
+VPC is regional level service. 
+How many VPCs can be made in one region in AWS? By default - 5 VPCs - it is soft limit, can be extended. 
+What is the benefit of multiple VPCs? To isolate environments - testing and production. etc
+Can two different VPCs communicate with each other by default? By default, VPCs can’t communicate. But by configuration we can communicate. 
+Can two different subnets in one VPC communicate with each other? Yes, they can
+Public Subnet -- Any subnet which is connected to internet gateway. 
+Private Subnet -- Subnet which is not connected to the internet. or can't be accessed
+over the internet. 
+Internet Gateway - A virtual router with which we go over the internet
+Important Information:
+The first four IP addresses and the last IP address in each subnet CIDR block are not available for you to use, and cannot be assigned to an instance.
+For example, in a subnet with CIDR block 10.0.0.0/24, the following five IP addresses are reserved:
+10.0.0.0: Network address.
+10.0.0.1: Reserved by AWS for the VPC router.
+10.0.0.2: Reserved by AWS. The IP address of the DNS server is always the base of the VPC network range plus two.
+10.0.0.3: Reserved by AWS for future use.
+10.0.0.255: Network broadcast address. We do not support broadcast in a VPC, therefore we reserve this address.
+Available IPs: = Total IPs -5 * Total Subnets
+IP Calculation Formula:
+10.x.x.x.
+172.16.x.x - 172.31.x.x
+192.168.x.x -- 192.168.x.x
+Range can be taken only from the above classes. 
+  32-n	
+2
+• Network Address: Represents the network, used to identify the start of a subnet.
+• Broadcast Address: Sends data to all devices within a network, marking the end of the IP range.
+Permanently Disable SELinux:
+To permanently disable SELinux, you need to edit the SELinux configuration file. Open the file /etc/selinux/config in your preferred text editor:
+sudo vi /etc/selinux/config
+Find the line that starts with SELINUX= and change its value to disabled:
+SELINUX=disabled
+sudo reboot
+In VPC Peering, If the IP Range of both acceptor and requestor will overlap, then communication will not be possible. VPC Peering does not support transitive routing—meaning VPCs cannot communicate indirectly through another VPC.
+VPC Peering is a networking connection that allows two Virtual Private Clouds (VPCs) to communicate privately using private IP addresses. It requires a requester to send a peering request, which the accepter must approve. Once established, you must update route tables to enable traffic flow between the VPCs, but note that VPC Peering does not support transitive routing—meaning VPCs cannot communicate indirectly through another VPC. Additionally, security groups and network ACLs must be configured to allow desired traffic. VPC Peering can span across different AWS accounts and regions, making it useful for cross-account collaboration, shared services, and connecting application components while maintaining isolation and security.
+NACL & SG:
+Network Access Control List It acts like a Firewall at subnet level. Security Group - Firewall at instance level. If a site is denied in NACL even if it is allowed in Security Group. We will not be able to access that particular site.
+Difference between Security Group and NACL?
+1.	NACL is at subnet level and SG is at instance level. 
+2.	NACL is stateless and SG is stateful . 
+3.	Allow and Deny Rules in NACL, in SG only Allow Rules. 
+4.	Lower number in NACL has more priority than the higher number. 
+NACL and Concept of Stateless and Stateful:
+Stateless: Imagine a party where guests need to check in and out every time they want to leave or re-enter. If someone is allowed to enter (inbound), they must also get a stamp to leave (outbound). Each interaction is treated independently, so if you want to leave again, you have to show your stamp to get back in. This is like stateless rules, where if you allow incoming traffic, you must explicitly allow the corresponding outgoing traffic.
+Stateful: Now, think of another party where once a guest is checked in, they don’t need to show their stamp to leave or come back in as long as they are already inside. If you allow a guest to enter (inbound), they automatically have permission to leave and re-enter without further checks (outbound). This reflects stateful rules, where allowing incoming traffic automatically permits the corresponding outgoing traffic, since the connection state is tracked.
+Priority:
+•	90 http allow
+•	100 http deny 
+•	Http will be allowed. 
+•	90 http allow
+•	80 http deny 
+•	Now Http will be denied.
+Running out of CPU = System will hang
+Running out of Memory = OOM Killed [Out of Memory Killed]
+Elastic Load Balancing (ELB) automatically distributes incoming application traffic across multiple targets, such as Amazon EC2 instances, containers, or IP addresses within a VPC. It routes requests to ensure high availability by balancing traffic across multiple targets in different Availability Zones within the same region. This enhances application performance and reliability by preventing any single target from becoming overwhelmed.
+Types of ELB:
+1.	Application LB	http/https layer 7
+2.	Network LB	tcp layer 4
+3.	Classic LB		both layer 7 and layer 4
+Network Load Balancer (NLB):
+1.	Operates at Layer 4 (connection level), routing connections based on IP protocol data.
+2.	Routes connections (requests) to targets such as EC2 instances, microservices, and containers within a VPC.
+3.	Supports both TCP and UDP protocols.
+4.	Capable of handling millions of requests per second with ultra-low latency.
+5.	Optimized for managing sudden and volatile traffic patterns.
+Application Load Balancer (ALB):
+1.	Supports HTTP and HTTPS protocols.
+2.	Operates at Layer 7 (request level), routing traffic based on request content.
+3.	Routes based on content with capabilities for host-based and path-based routing.
+4.	Ideal for advanced load balancing of HTTP/HTTPS traffic.
+5.	Provides sophisticated request routing for modern application architectures, including microservices and container-based applications.
+Differences Between Network Load Balancer (NLB) and Application Load Balancer (ALB)
+•	Layer: NLB operates at Layer 4 (connection level), while ALB operates at Layer 7 (request level).
+•	Protocol Support: NLB supports TCP and UDP protocols; ALB supports HTTP and HTTPS protocols.
+•	Routing Method: NLB routes based on IP protocol data; ALB routes based on request content.
+•	Use Case: NLB is ideal for handling sudden traffic spikes and extreme performance; ALB is designed for advanced routing and modern application architectures.
+•	Latency: NLB maintains ultra-low latencies for millions of connections; ALB focuses on content-based routing with slightly higher latency.
+•	Target Types: NLB routes traffic to EC2 instances and IP addresses; ALB can route to EC2 instances, containers, IP addresses, and Lambda functions.
+The basic reason ALB can't handle as many requests as NLB is due to its Layer 7 operations. ALB performs content-based routing, which requires deeper inspection of traffic, adding more processing overhead compared to NLB, which routes traffic at the simpler, faster Layer 4 level.
+Load Balancer Components:
+Listener: 
+1.	Define the port and protocol on which the load balancer must listen.
+2.	Each Application Load Balancer needs at least one listener to accept traffic.
+3.	Each Application Load Balancer can have up to 50 listeners.
+4.	Routing rules are defined on listeners, directing traffic to appropriate targets based on conditions. Targets based on defined rules and configurations.
+Target Groups:
+•	Logical grouping of targets (EC2 instances, containers, IP addresses) behind the load balancer.
+•	Target groups can exist independently from the load balancer.
+•	They are a regional construct that can be associated with an Auto Scaling group.
+•	Target groups can contain up to 1,000 targets.
+•	Health checks can be configured on target groups to monitor the status of targets.
+•	Each target group can have its own routing rules and load balancing algorithms.
+•	Supports different protocols (HTTP, HTTPS, TCP, etc.) based on the type of load balancer.
+Sticky sessions — also known as session persistence — is the method that makes it possible for the load balancer to identify requests coming from the same client and to always send those requests to the same server.
+IAM:
+IAM Components:
+•	Users  Individual – A physical Person
+•	Groups  Group of Finance People, Group of IT people, etc. [We organize these groups for the assignments of permissions and policies]  There are no further sub-groups in the groups
+•	Roles Internal Usage within AWS resources. Interactions of Two services of AWS with each other. Service to Service Interaction. To read write, create a database  we need roles.
+•	If an EC2 want to do CRUD in a database, it can’t do the same unless we assign a role to that particular EC2 Instance. 
+•	RBAC  ROLE BASED ACCESS CONTROL
+•	POLICIES [JSon Documents] (Java Script Object Notation – Information are saved in Key-Value Pair)  What Users, Groups and Role can do or can’t do. Services perform their functions after given the access. For example. EC2 is a service and EBS is another service. If EC2 want to write at EBS  It must be given the access or permission. Or else it will not be able to work. 
+•	
+
+All about Raid:
+RAID configurations enhance data storage performance and protection through various techniques. RAID-0, known as striping, spreads data across multiple disks to improve read/write speeds but lacks redundancy, meaning if one disk fails, all data is lost. In contrast, RAID-1 involves mirroring, where data is duplicated on multiple disks, offering good protection and quick restoration but consuming extra storage and impacting write performance. RAID-3 introduces parity by using an additional disk to store parity information, allowing for data recovery through bitwise XOR calculations, although it can face performance issues due to spindle movement. Lastly, Distributed Parity avoids a dedicated parity disk by spreading parity data across all disks, enhancing performance but increasing the risk of data loss if multiple disks fail. Each RAID type presents a trade-off between performance and data safety, necessitating careful consideration based on specific storage needs.
+•	Default Security Group  Block all inbound traffic and allow all outbound traffic
+
+Jenkins:
+In 2004, First time released. Older Name = Hudson. Jenkins Community joined and developed a tool in 2011 ==> Later known as "Jenkins"
+What Jenkins can do?
+•	Integrate with many different Version Control Systems (GitHub, Gitlab, BitBucket, CVS, SVN, TFS ...)
+•	Generate test reports (JUnit)
+•	Push the builds to various artifact repositories
+•	Deploys directly to production or test environments
+•	Notify stakeholders of build status(Through Email)
+Triggers in Jenkins:
+•	Manual Build ==> Started by User Name
+•	Poll SCM ==> Started by SCM Change
+•	Poll SCM: A feature in Jenkins that periodically checks the version control system for changes. 
+•	Cron: Cron is a time-based
+•	job scheduler in Unix-like operating systems to schedule and automate the execution of jobs periodically at fixed times or specific intervals
+•	Build Periodically ==> Started by timer
+•	GitHub Webhook ==> Started by GitHub push by Sohail8821
+•	A webhook allows an application to send real-time data to another application. In the context of Jenkins and GitHub, a webhook is a mechanism used by 
+•	GitHub to notify Jenkins of repository changes. Jenkins will then automatically build and test the code in response to the webhook notification.
+•	"Build with Parameters" in Jenkins allows users to customize builds by passing specific input values, or parameters, into the build process. This feature enables flexibility by letting users define variables (e.g., environment, version, file paths) before starting the build, tailoring the build to different requirements without changing the pipeline script.
+Jenkins Directory Structure:
+•	To check the code coverage report in Jenkins we use jococo plugin.
+•	Home Directory of Jenkins ==> /var/lib/Jenkins
+•	In the home directory, there will be the directory of Jobs. All of the jobs will be placed here.
+•	In the build directory ==> All of the details of the build will be placed.
+•	There are two config.xml files in Jenkins. If it is placed in the home directory of Jenkins, it will tell the configuration of 
+•	Jenkins and if it is placed in the directory of Jobs. It will tell the configuration of jobs.
+•	scm-polling.log ==> The SCM (Source Code Management) polling log file in Jenkins typically provides information about the SCM polling process for a specific job. When SCM polling is enabled for a Jenkins job, Jenkins periodically checks the configured SCM system (such as Git, Subversion, Mercurial, etc.) for changes in the source code repository.
+•	Workspace: It contains all the source code. All of the code which is cloned or pulled from the github is placed here in this directory. Temp files are also present in this directory.
+•	Tools: All of the softwares installed by Jenkins pulgins such as Maven, Tomcat etc..Tools are placed in this directory.
+•	Plugins: All of the installed plugins are placed in this directory.
+•	Users: All of the information of Users will be placed in the user.xml file. Secrets are also placed in this directory.
+Jenkins Plugins:
+o	Deploy to Container  ==> To deploy application to JBOSS/Tomcat
+o	2- Deploy WebLogic  ==>   Weblogic is the server owned by Oracle. If we have to deploy an apllication on Weblogic we need this plugin. 
+o	Websphare Deployer ==>  It is used to deploy an application on Websphare. 
+o	WebSphere Application Server helps you build, deploy and run applications with flexible, security-rich Java 
+o	EE-certified runtime environments — from lightweight production environments to large enterprise deployments.
+o	4-Maven Integration  ==>  For Maven based projects deployment we use this plugin. 
+o	5- Jenkins Restart 
+o	http://IP Address:8080/restart  ==> Instant restart and immediate restart. Will abort all of the activities. 
+o	http://IP Address:8080/safeRestart
+o	Safe Restart ==> It will restart after the ending of running jobs. 
+o	Jenkins will try to pause jobs and restart once all of the running jobs will either finished
+o	or paused. Pipeline builds may prevent jenkins from restarting for a short period
+o	of time. on some cases. But if so they will be pause on next available opportunity
+o	and then resumed after Jenkins restarts
+
+o	Go to Manage Jenkins => Plugins ==> Available Plugins ==> Safe Restart ==> Install 
+o	Now there will be a tab on the left side of Jenkins, we just have to click on that button and safe restart will be taken place. 
+o	6-Next Build Number ==> If we want to change the next build number we can use this 
+o	plugin
+o	UseCase of Next Build Number ==> To resolve conflicts at Build artifactory 
+o	7-Jacoco ==> Java Code Coverage ==> Helps in generating reports
+o	SSH Agent
+o	8- Email Extension ==> We can send email with freestyle projects and all others
+o	Configure =>
+o	Manage Jenkins ==> System ==> Email ==> We have to configure it
+o	Go to Manage Jenkins ==> System ==> Email Notification
+o	9- SonarQube Scanner ==> It performs the functionality of SonarQube Server. 
+o	mvn clean sonar:sonar  ==> We use when we go for sonar qube server. However, When we install this plugin we can use the command 
+o	without using sonar:sonar. After the installation of this plugin we will configure our credentials in the Jenkins Server. 
+o	11- Audit Trail  ==> It can be used for tracking of traffic. It tells about the jobs and the person who started the build and 
+o	It starts tracking after being installed.  
+o	Go to Manage Jenkins => Plugins ==> Available Plugins ==> Audit Trail ==> Install
+o	Now Go to Manage Jenkins ==> System ==>Audit Trail and Configure it
+o	Logfile ==> var/lib/jenkins/audittrail.log
+o	Logfile Size 5 MB
+o	Logfile Count 3 
+o	tail -f audittrail.log file name  ==> To see the run time logs in linux
+o	12-Job Configuration History ==> To restore the deleted jobs we use "Job Configuration History" Plugin.
+o	We can see in the history 
+o	created Jobs, deleted jobs etc. 
+o	Go to Manage Jenkins => Plugins ==> Available Plugins ==> Job Configuration History ==> Install
+o	13- Schedule Build ==> It is used to schedule a build at a specific time and date..
+o	Go to Manage Jenkins => Plugins ==> Available Plugins ==>Schedule Build ==> Install
+o	Now we can schedule our jobs. We can run it for one time.
+o	14- Blue Ocean  ==> It will provide its own GUI for Jenkins Using. 
+o	15- SSH Agent ==> Publish over SSH  ==> It is related SSH,. It is used while creating Pipeline Project Jobs 
+o	[Scriptive Way and Declarative Way]
+o	16-Buildname and Description Setter ==> If we want to change the names of our builds. we use Build name and Description 
+o	JOB ==> CONFIGURE ==> Build Environemtn ==> Set Build Name 
+o	17 - Thin Backup ==> It is used to take the backup of Jenkins. 
+o	18- Convert to Pipeline ==> Now the pipelines are made via scripts. By this plugin we can convert our free style build jobs
+o	into pipelines.
+o	Go to Manage Jenkins => Plugins ==> Available Plugins ==>Convert to Pipeline ==> Install
+o	19- Download the file or place the URL of external plugin in the advanced settings option of plugins. 
+o	[If there is no plugin in the available plugins. and We want an external plugin. We can place the url of that plugin in the advanced settings
+o	of plugin and give the url It will automatically deploy the plugin in the Jenkins.]
+  CI/CD Pipelines in Jenkins:
+o	In Jenkins, scripts are used to automate and manage complex build, test, and deployment processes. They define the sequence of steps, configure tasks, and streamline continuous integration and delivery (CI/CD), ensuring consistency and efficiency across environments.
+o	Scripts in Jenkins provide automation, consistency, scalability, error reduction, version control, flexibility, and time efficiency in managing CI/CD pipelines.
+o	Scripts of Jenkins are written in Ruby Language. Script will always start with the node.  Node is representing that this node will be used to run the job of Jenkins.
+node {
+In between, stages will be made. 
+}
+
+In pipeline Syntax:
+o	Note ==> If we have to run any command, we will use the shell to run the command. sh "mvn clean package"
+o	Error 127 ==> Command Not Found in Shell Scripting.
+o	Where is the war file?
+o	/var/lib/jenkins/workspace/pipeline-scriptedway/target/maven-web-application
+Difference between Scripted way and Declarative Pipelines: Declarative pipelines provide a set of predefined keywords that can be used to define stages, steps, and post conditions. Scripted pipelines, on the other hand, allow you to define your pipeline as Groovy code.
+In the scripted way pipeline projects, we don't write the script with in the job pipeline, instead we use a separate file and place it in the GitHub Repo. The name of the that file is Jenkins file.
+
+In declarative way, script syntax is changed. It is started from the pipeline
+pipeline{
+	agent any 
+	stages{
+}
+}
+Parallel job execution in Jenkins allows multiple pipeline stages or jobs to run simultaneously, significantly reducing build times. This feature optimizes resource utilization and improves efficiency, especially for complex builds, by splitting tasks across multiple agents or nodes.
+Jenkins Shared Library: We use functions in our scripts for different tasks.  If we need a functions’ functionality in multiple pipelines, we can make a repository, place this functionality in that repo and then re-use that repo. We can recall it as we need in our script. Jenkins Shared library is the concept of having a common pipeline code in the version control system that can be used by any number of pipelines just by referencing it. In fact, multiple teams can use the same library for their pipelines.’
+Jenkins CLI: The Jenkins CLI (Command Line Interface) allows users to interact with a Jenkins server from the command line. It provides commands to manage jobs, view build logs, trigger builds, update configurations, and more, enabling automation and remote management of Jenkins tasks directly from the terminal.
+At every script run we have to give Jenkins URL, Jenkins User, Jenkins Token
+
+Linux:
+o	Name of Linux Kernel ==> vmlinuz
+o	HP ==> HP-UX
+o	Sun - Older Name Solaris==> Purchased by Oracle ==> 
+o	IBM ==> AIX
+o	Debian ==> Ubuntu ==> Min, gento
+Two Popular Distributions:
+o	1-Red Hat Family      Extention ==> .rpm       yum
+o	2-Debian  Family      Extention ==> .deb       apt-get
+File System:
+o	In windows ==> Windows Files ==> C Partition
+o	In Linux ==> Main Directory Files ==> Root Partition
+o	Windows File System ==> NTFS/FAT
+o	Linux File System ==> Ext2,3,4 BRS, xfs, ufs, zfs
+Types of Users in Linux:
+o	Root User - Admin or Super User #
+o	Normal Users ==> $
+o	System Users ==> It is made or generated by a software. Like Jenkin generates users for its own.
+Colors in Linux:
+•	Files, Directories and Links are represented in Linux with colors.
+•	Blue Color ==> Directory or Folders
+•	White Color ==> Files 
+•	Red Color ==> Compresses Files
+•	Green Color ==> Scripts
+•	Pink Color ==> Image Files
+Permissions in Linux:
+•	By default, permissions in the Linux are based on what criteria??UMASK
+•	Root 0022
+•	Normal User 0002
+•	Base permission for Root to make a directory: 0777-0022=755
+•	Base permission for Root to make a file: 0666-0002= 644
+•	Base Permission for Directories: 0777
+•	Root User: 0777-0022=0755
+•	Normal User: 0777-0002=775
+•	Base permission for Files: 0666
+•	Root User: 0666-0022=0644
+•	Normal User: 0666-0002=664
+•	chmod + ==> Means the permissions will be added to the already permissions. 
+•	chmod - ==> Means the permissions will be removed from the already permissions.
+•	chmod = ==> Means the permissions will be replaced with the already permissions.
+•	chmod u+rwx, g+r, o+x a.txt
+•	If we want to prevent the deletion of any file except from the owner or root we use sticky bit. 1777 	==> Sticky Bit When you want someone not to delete anything.  chmod 1777 file.txt. Now no one will be deleting it.
+Difference between Relative Path and Absolute Path:
+•	touch a/b/c.txt ==> Relative Path
+•	touch /a/b/c.txt ==> Absolute Path [Starts with the root]
+User Management:
+•	sudo su ==> Just gets the privileges of Root in the same user profile.
+•	sudo su -  ==> To switch to the profile of Root User.
+•	users → Displays the usernames of users currently logged into the system.
+•	whoami → Shows the username of the current user executing the command.
+•	who → Lists all users currently logged into the system, along with their terminal and login time.
+•	who -H → Displays the same information as who but includes a header row for clarity.
+•	w → Shows who is logged in and their current activity, along with system uptime and load averages.
+•	uptime → Displays how long the system has been running, along with the number of users and system load averages.
+What is inode?
+Inode is a data structure that can store file or directory information, or metadata. File permissions, file users, file size. [It does not save the file name or directory name. It saves the inode number of the file or directory]. OS uses the inode numbers to save the files or directories.
+To check the files inodes ==> ls –li…. Inode numbers are unique.
+Links:
+•	A hard link shares the same file properties as its parent file, including the timestamp, size, and permissions, resulting in a larger size and increased storage consumption. If the main file is deleted accidentally, a hard link can still serve as a fully functional replacement, as it has the same inode number as the original file. Additionally, hard links keep content in sync with the parent file. Hardlink is made of directories only. It can’t be made of files. 
+•	In contrast, a soft link (or symbolic link) does not retain the same properties as the original file, including different inode numbers, timestamps, and size. It functions as a minimal-sized shortcut and does not consume significant storage. However, if the original file is deleted, the soft link cannot act as a replacement, as it merely points to the original file's location and cannot retrieve lost content. Soft link can be made of both. In the production environment, we usually use the soft links.
+Editors:
+•	Windows ==> Notepad, Notepad ++
+•	Linux ==> vi, vim, nano, ed, pico, emacs, ex
+•	With just w ==> It only saves don't quit. 
+•	To get the seriul number in the editor 
+•	Go to command mode and write :se nu ==> Serial number will be coming
+•	To end serial numbers ==> :se nonu
+•	To search in the command mode 
+•	/ search name 
+•	To go to a specific line ==> :10 ==> It will take us to line 10
+•	yy ==> Is used to copy a line
+•	y5 ==> To copy the five lines from your curson current position. 
+•	p ==> Is used to paste the content. 
+•	dd ==> To delete the current line or to cut the current line
+•	d5 ==> To delete the five lines
+•	u ==> To undo 
+•	ctrl + r ==> To re do
+•	cat - file.txt ==> To see the content of file.txt with numbers
+•	cat -n file.txt ==> To see all of the content with serial numbers
+SED:
+The sed (stream editor) command in Unix and Linux is used for text manipulation, allowing for text substitution, deletion, and replacement in a file or input stream. It works line-by-line, processing data without altering the original file by default, making it useful for automated editing in scripts.
+•	sed 's/red/yellow/' color.txt ==> To replace the first red with yellow
+•	sed 's/red/yellow/2' color.txt ==> To replace the second red with yellow
+•	sed 's/red/yellow/g' color.txt ==> To replace the red with yellow in the whole file.
+•	sed -i 's/red/yellow/g' color.txt ==> To change the file permanently.
+Basic or General Commands:
+•	Sort --> To sort the content in any file we use the sort command. To arrange the content in an ascending order --> sort friends.txt. It will sort the content in the file in an alphabetic order. sort -r friends.txt --> To reverse the alphabetic order.
+•	This entire command pipeline reads the contents of friends.txt, sorts the lines in alphabetical order, and transforms the case of the letters if the ts command is used as intended. Finally, it filters the sorted lines to display only those containing the string "ali," ignoring the case of the letters. This allows for efficient retrieval of specific entries while maintaining an organized output. [cat friends.txt | sort | ts 'a-z' 'A-Z' | grep -i ali]
+•	date --> To checck the date of the machine
+•	date -s "20240114" [yearmonthday] --> You have to run the command with the root user. 
+•	timedatectl --> It is used to change the time zone.. With this command we can set the time,
+•	time zone. We can check the list of time zones.
+Disk Commands:
+•	df --> disk free --> Tells about the disk information. 
+•	df -h --> Tells the disk information in human readable form. The avilable size of the disk, total size and the utilized size. 
+•	du -h --> disk usage. It tells about the disk utilization by different directories or files. 
+•	du -hs --> It will summarize the detailes of the command of disk usage.
+What is xargs in Linux? xargs in Linux is a command-line utility that builds and executes commands using input passed via standard input (stdin) or a pipe. It takes input (like a list of files  or arguments) and applies it as parameters to another command, enabling efficient handling of large inputs. Like: To Delete all files with a specific extension   find . -name "*.log" | xargs rm
+
+Docker:
+What is container? Container is a wrap of a code and all of its dependencies into a single deployable unit that can be run on any system. Multiple isolated containers can be launched together to form Microservices which can be easily managed using any orchestration tool e.g. Docker Swarm, Kubernetes, etc. Container is nothing but a process and Process is nothing but a program which is under execution is called Process.
+Why we need containers?
+•	1-Microservices architecture deployment Implementation needs containers.
+•	2-Consistent Development Environments
+Features of Containers:
+•	Containerization - OS Level Isolation
+•	Container has no OS
+•	Containers are light weight, fast and portable. 
+•	Containers are port able.
+What is Docker? Docker is a tool that helps in developing, building, deploying and executing software in isolation. It does so by creating containers that completely wrap a software. Isolation provided by container gives a layer of security to the containers.
+Difference between Virtualization and Containerization:
+A Virtual Machine (VM) is a heavyweight solution compared to a Container, which is known for being lightweight. VMs generally have limited performance as they require a complete Operating System (OS) for each instance, whereas Containers offer native performance by sharing the host OS. While VMs rely on hardware-level virtualization, Containers utilize OS-level virtualization, making them more efficient. The startup time for a VM can take several minutes, while Containers can start up in mere milliseconds. Additionally, VMs require allocated memory, often consuming more resources, whereas Containers need significantly less memory space, making them a more resource-efficient solution for deploying applications.
+Docker Installation:
+•	docker info 
+•	apt get update -y
+•	sudo apt install docker.io -y
+•	sudo service docker status
+•	sudo usermod -aG docker ubuntu	# To give permissions to Ubuntu User to run all of the docker commands. 
+•	sudo usermod -aG docker $USER
+•	# We have to add the user by which we are going to use the docker in the docker group. 
+•	To resolve the issue of permissions. 
+•	ps -ef | grep "docker"
+Docker Architecture:
+•	Docker Engine is responsible for creating and managing all Docker processes. It has three major components: Docker CLI, Docker API, and Docker Daemon.
+•	The Docker CLI (Command-Line Interface) is the primary interface that users utilize to interact with Docker. When you enter commands such as docker run, you are interacting with the Docker CLI. This component is essential because it allows users to control Docker processes directly. Internally, the Docker CLI communicates with the Docker API, effectively acting as the user-facing layer of Docker’s architecture.
+•	The Docker API serves as the crucial bridge between the Docker CLI and the Docker Daemon. It receives commands issued by the CLI and transmits them to the Docker Daemon for execution. This API enables programmatic interaction with Docker’s core functionalities, facilitating seamless communication between different components within the Docker ecosystem.
+•	The Docker Daemon, often referred to as dockerd, is the background process that handles all Docker operations. It listens for incoming requests from the Docker API and manages Docker objects, such as images, containers, networks, and volumes. This component is responsible for creating, starting, stopping, and managing containers, playing a central role in Docker’s operational workflow.
+•	Additionally, Docker relies on Docker Registries, which are storage systems for Docker images. A registry can be public, like Docker Hub—the default registry configured in Docker—or private, allowing for more control over image storage. When you execute commands like docker pull or docker run, Docker fetches images from the configured registry. Conversely, using docker push uploads an image to the specified registry. This system ensures that images are easily accessible and manageable, supporting efficient container deployments.
+Difference between Docker Engine and Docker Deamon:
+•	The Docker Engine is the overarching platform that enables the creation, management, and operation of containers in Docker. It includes several components like the Docker CLI, Docker API, and Docker Daemon. Essentially, Docker Engine is the entire framework or toolkit that handles containerized environments.
+•	The Docker Daemon (also known as dockerd) is a specific part of the Docker Engine. It is a background process that directly manages containers, images, networks, and volumes on the host machine. It listens for commands from the Docker API, which can be triggered by the Docker CLI or other tools. In short, the Docker Daemon does the actual work of creating, running, and managing containers.
+How to Check the layers of an image?
+•	docker history imagename
+•	docker history tomcat:8.0.20-jre8
+Some Basic Commands of Docker:
+•	docker build ==> By this command we can build the image. 
+•	docker build -t   ==> The flag of "t" will be looking for Dockerfile. 
+•	Anyhow, we can use any file as a Dockerfile and we can rename also the Dockerfile and we can use that renamed file also. But for that we have to use another flag "f".
+•	docker build -f <docker-filename> -t
+•	docker run   ==> Creates and Start a Container. Out of Docker Image
+•	docker run -d --name nginxcontainer -p 80:80 nginx
+•	Image ==> Is a Package
+•	Container ==> Is runtime instance (Process) of the image. 
+•	docker inspect containername ==> Used to check the IP Address of Container. 
+•	Image Format ==> registry name/repo: tag
+•	If we don't give registry name - Docker will go to Docker Hub. 
+•	If we don't give tag(Version), the latest tag(Version) will be used. 
+•	Be default Registry of Docker ==> DockerHub
+•	docker run -d --name nginxcontainer 80:80
+•	If we want to access container from outside the cluster port binding is necessary. 
+•	curl http://PublicIPOFHostMachine:80
+•	By Default Dokcer Root Directory ==> /var/lib/docker
+•	Docker image is the combination of: cutdown OS(OS Liberaries),Software (Like Tomcat, Node, Python ..etc),Application Code, ENV, Config Files.
+•	docker info 	==> Tells information about docker system
+•	docker --version OR docker version ==>
+•	docker ps -a 	==> All of the containers 
+•	When we restart our machine, our container stops.
+•	docker image inspect <Image ID or Image Name> OR docker inspect <Image ID or Image Name>	==> Images detailed information. All of the layers of the image.
+•	docker history <Image ID>  ==> To check the layers of any Image
+•	/var/lib/docker/overlay2	==> Docker images information.
+•	docker login --username sohail --password 1234
+•	docker login --username sohail --password-stdin 	==> Standard Input
+•	cat registry-password.txt | docker login --username sohail --password-stdin
+•	docker rmi <imagename/image ID >
+•	docker images -q 	==> This command Tells about the image IDs
+•	docker rmi $(docker images -q)   ==> To remove all of the available images
+•	docker images -q -f dangling=true
+•	docker system prune ==> It is used to delete All Stopped Containers
+•	docker image prune 	==> Will remove all of the dangling images. 
+•	docker container prune ==> Will remove all of the stopped containers. 
+•	docker network prune ==> Will remove all of the networks not in used.
+•	We can implement a tag on the dangling images by the mentioned command docker tag <image ID> registryname/reponame:tag
+•	To make the tar file of the image: docker save <imageID/imagename> -o <filename>.tar We will get a tar file.
+•	docker load -i tarfilename of image
+•	To be live container, there needs to be at least one process.
+Container related Commands:
+•	docker start mavenappcont 
+•	docker rm -f mavenappcont
+•	docker stop mavenappcont = Stop the process gracefully
+•	docker restart <container-Id>  == Restart the process
+•	docker kill <Container ID>  =  Stop the process forcefully
+•	docker pause <container id> = pause the container
+•	docker unpause <container id> = unpause the container
+•	docker ps = to see all of the running containers
+•	docker ps -a =  To see all of the paused and running containers. 
+•	docker container ls == To see all of the running containers
+•	docker container ls -a == To see all of the containers running and paused. 
+•	docker rm containerid = to remove a container
+•	docker rm -f = to remove a container forcefully
+•	docker rename <oldname of container> <newname of container>
+•	docker ps -aq = To see the IDs of all containers
+•	docker rm -f($docker ps -aq) = To delete all of the containers
+•	docker container prune == To delete all of the stopped containers. 
+•	docker ps -a --filter status=exited  = To see the exited container. 
+•	docker ps -aq --filter status=exited  = To see the exited container ID. 
+•	docker rm -f($docker ps -aq --filter status=exited) = To delete exited containers
+•	docker ps -a | aws 'awk$2==mavenwebappcon/sohail:1 {print$1}' | docker rm -f 
+•	docker inspect containername/containerid ==> Will tell the detailed information of container
+•	docker inspect mavenapp --format={{.NetworkSettings.IPAddress}}
+•	docker inspect mavenapp --format={{.State.Status}}
+•	docker logs  ==> Will display the logs of the processes running inside the container. 
+•	docker logs container-name/container-id
+•	docker logs -f --tail 10 container-name/container-id [This command will show the last 10 end logs of the container.]
+•	docker logs -f   Floating Logs: The logs which are continuously running.
+•	docker stats ==> Will display the statistics like cpu utilization, memory utilization of the container.  docker stats container-name/container-id
+•	
+•	What is OOM Error?
+•	Out Of Memory Error ==> The process will be killed. 
+•	Out of CPU Error ==> The process will be hanged.
+Dockerfile:
+It is simply a text file; in which we pass instructions to create an image. Image is a package of all dependencies and source code in a combination of layers. The FROM instruction in Dockerfile sets the base image for the container, while MAINTAINER and LABEL are used to define metadata related to the Dockerfile, like author information or version details. The build context refers to the directory where the Dockerfile is located and from where the Docker image is built. The COPY command is used to copy files from a source path (relative) to a destination path (absolute). For example, COPY target/maven-web-app.war /usr/local/tomcat/webapps specifies that the file will be copied to the Tomcat directory. If the destination path does not exist, COPY will automatically create it. The ADD command, similar to COPY, also copies files, directories, or remote endpoints from a source to a destination, but it includes additional features: it can handle URLs to fetch remote files, and if a tar file is added using ADD, it will automatically extract it to the target directory. This makes ADD versatile for managing local and remote files as well as compressed archives.
+In Dockerfiles, commands can be executed in two forms: executable and shell. When a command is run in executable form, it operates as the main process, whereas in shell form, it often runs as a child process. For CMD and ENTRYPOINT, it is generally advised to avoid running commands in shell form because they will execute as child processes, which may lead to issues like unexpected shutdowns not being properly reported. Conversely, RUN commands, which are executed while building the Docker image, typically run in shell form. This allows full utilization of shell scripting capabilities, such as piping and subcommands. An example of a shell command in RUN is RUN mkdir -p /opt/test && chmod 777 /opt/test, which creates a directory and adjusts permissions. These types of commands are not suitable for executable form. While RUN is intended for building the image with commands in shell form, CMD is used to specify default commands that will execute when the container starts, and it operates in executable form by default.
+•  Running commands in executable form is like assigning the task directly to the main team. The command acts as the main process, and Docker can monitor it directly. If the process fails or exits, Docker will know right away.
+•  Running commands in shell form is like using a sub-team. The command is wrapped in a shell (like sh -c), making it a child process. If this child process fails or exits unexpectedly, Docker might not catch the issue directly, leading to unexpected shutdowns not being properly reported.
+Dockerfile Concepts:
+•	If we donl't want to get the stuff from cashe we can use this command: docker build -t --no-cashe image1 .
+•	In Dockerfile we have only one CMD. If there are more than one instructions of CMD, the Dockerfile will run only the last CMD instruction and will ignore the previous one.
+•	Can we override CMD commands? We can override the CMD commands by giving the command on run time.
+•	ENTRYPOINT looks similar to CMD. The only difference, Parameters cannot be override.
+•	If we use more than one ENTRYPOINT, the last one will be utilized. 
+•	Only one CMD and One ENTRYPOINT will be utilized. 
+•	If we use CMD and ENTRYPOINT together, after ENTRYPOINT, CMD command acts as an argument.
+•	ARGUMENTS are used to pass the arguments on run time. We have to give the arguments after FROM instruction. Before FROM we can only give argument for the Base Image only. All of the ARGUMENTS could be utilized only during the image building process. After building the container we cannot use it.
+•	ENV variables set in the Dockerfile are available during both the image-building phase and when the container is running, unless explicitly overridden at runtime.
+•	Working Directory instruction is used to set the Working directory for the instructions of COPY, RUN, CMD etc. If the WORDKINGDIR does not exist it will be created by itself.
+•	The USER instruction in a Dockerfile sets the username or UID for executing subsequent commands during the image build and container runtime. It helps enhance security by avoiding running processes as the root user. Once specified, all following commands are executed with the permissions of the given user.
+Dockerfile Best Practices:
+•	Use official images as base images
+•	Use Alpine base images whenever it is possible
+•	Don't copy unnecessary files/folders and don't install extra software or packages in the image. 
+•	Try to reduce number of layers as much as possible
+•	Don't Run/start container process as a root user. Try to use it as a non-root user
+•	Try to use Multistage Dockerfile wherever it is applicable to reduce the size of 
+•	final image.
+Can we delete the image by which we are running a container? No, we can not delete the images.  If we try to delete it forcefully, Images will be untagged but will not be deleted.  However, if we stop the container after that we can delete the container. After the deletion of container, we can remove the image. Running Container image cannot be deleted. 
+What is dangling image in Docker? Any image without repository tag/name is known as Dangling Image. 
+How to see the dangling images? docker images -f dangling=true
+What is the difference between docker stop and kill? stop - Will stop the process gracefully kill - Will forcefully stop the process. 
+What is the difference between COPY and docker cp? docker cp ==> Using cp we can copy files from container to host and host to container. COPY is used in dockerfile. It is used to copy the files from build context to our image. In other words, we can say that COPY is a Dockerfile instruction that copies files during image build. From Build context to the our image. docker cp is a command that copies files between a container and the host at runtime.
+docker top   ==> Tells about the top running processes   docker top container-name/container-id.
+How to limit CPU/Memory utilization in docker? docker run -d --name container-name/container-id -p 80:80 --cpus=0.25 --memory=128M imagename
+What is the difference between shell form and executable form? Shell form uses a single string with shell syntax (e.g., RUN apt install git), while executable form uses a JSON array with explicit command and arguments (e.g., RUN ["apt", "install", "-y", "git"]), avoiding shell interpretation.
+What is the difference between RUN and CMD? RUN is executed while building the image. Commands will be run in Shell form. CMD is executed when container starts. Main purpose of CMD is give default commands. Command will be run in executable form. 
+What is the difference between RUN and docker run? RUN is executed while building the image. Commands will be run in Shell form. It is an instruction which is used in the Dockerfile. docker run is the command to create and start the container.
+What is Multi-Stage Dockerfile? A Multi-Stage Dockerfile is a powerful feature that allows developers to create smaller, more efficient Docker images by separating the build and runtime environments. It enables the use of multiple FROM statements within a single Dockerfile, allowing the application to be built in one stage (often with heavy dependencies) and then copied to a slimmer image in the next stage. This approach reduces image size, minimizes security vulnerabilities, and improves deployment speed by including only the necessary files in the final image.
+What is Docker Compose? Docker Compose is a tool designed for defining and running multi-container Docker applications using a single YAML file, typically named docker-compose.yml. It allows developers to configure all services, networks, and volumes in one file, streamlining the orchestration of complex applications. Key concepts in Docker Compose include services (the individual containers running your application), networks (enabling communication between containers), and volumes (persistent storage that can be shared among containers). Docker Compose also supports profiles, which allow you to define a subset of services that can be activated based on specific use cases or environments, making it easier to manage different configurations for development, testing, and production. By using Docker Compose, developers can simplify their workflow, automate the creation of containers, and ensure consistency across environments, leading to faster development cycles and easier deployments. Additionally, it facilitates scaling services, managing environment variables, and simplifying application dependencies, making it an essential tool for modern containerized applications.
+What is Docker Networks: Docker networks provide a mechanism for containers to communicate with each other and with external services in a secure and efficient manner. Docker supports several network types, including bridge (the default network for containers, allowing them to communicate on the same host), host (where containers share the host’s network stack), overlay (enabling communication between containers across different hosts, useful in swarm mode), and macvlan (allowing containers to have unique MAC addresses, making them appear as physical devices on the network). Networking is essential in Docker for ensuring that containers can discover and connect to one another without requiring manual IP management. Key concepts include network drivers, which define the behavior of the network, and network scopes (local for single hosts and global for multiple hosts). By utilizing Docker networks, developers can enhance the security of their applications, manage container communication effectively, and create isolated environments that simplify service interactions and scalability in containerized applications. Proper network configuration is crucial for deploying microservices architectures and ensures that applications can easily integrate with other services and systems.
+Network drivers determine how neighborhoods (containers) interact within the city (Docker), while network scopes define the geographical limits of that interaction. Understanding both concepts helps ensure that your containerized applications communicate effectively, just as well-planned roads and neighborhoods contribute to a city’s functionality.
+
+
+Maven:
+Maven is a Build Too which manages dependencies. Although it does both works, however, its fundamental objective is to "Manage The Projects" Maven can build any number of projectsinto desired output such as .jar, .war, metadata. Maven is mostly used for java based projects. It was initially relaesed on 13 July 2004. Maven is Written in Java. Meanings of Maven is “Accomulator of Knowledge." ==> [Ikatha Karna]. Maven helps un getting the right jar file for each project as these may be different version of Separate Packages.To download depedencies it is no more needed to visit the official Website of each software. It could now be easily done by visiting "mvnrepository.com"Means Its Fundamental Objective ==> Maven is "Project Management Tool"Java Based Build Tools 
+•	1-Ant         ==> Legacy Tool - Old 
+•	2-Maven
+•	3- Gradle = Latest but Maven is more popular
+Default files:
+•	Ant ======> build.xml
+•	Mavn ======> pom.xml  [Package Object Model]
+•	Gradle ======>build. Gradle
+Maven is being used across the globe on Java Language.
+•	Node JS ==> Gulp, Grunt
+•	Python ==> PyBuilder
+•	Ruby ==> Rake
+•	.Net ==> Nant, MS Build
+What is Build Artifact?
+In software development, an "artifact" typically refers to any intermediate or final product that is produced during the development process. This can include compiled code, executable files, libraries, documentation, configuration files, and more. The process of "building artifacts" generally refers to the process of compiling source code, running tests, and packaging the resulting binaries and other resources into deployable artifacts such as executable files, installers, or distribution packages. Making the package of the code. When developer make the code an executeable package. It is also known as Build Artifect.
+What is Maven? Maven is the open Source and it is Java Based Build Tool. It is built by Apache that's why it is called Apache Maven. For building ==> We need a build Script
+Javac ==> is the compiler of java.
+JAR, WAR and EAR:
+JAR (Java Archive), WAR (Web Application Archive), and EAR (Enterprise Archive) files are packaging formats used in Java to bundle various components for distribution and deployment. JAR files package Java class files, resources, and metadata into a single compressed file, making them ideal for libraries and standalone applications. They can include classes, images, and configuration files. WAR files, on the other hand, are specifically designed for web applications and include all necessary components such as HTML, JSP, Servlets, JavaScript, and CSS, along with configuration files like web.xml. They are deployed to servlet containers or application servers, such as Apache Tomcat. EAR files are used for larger enterprise applications and can contain multiple modules, including EJB, WAR, and JAR files. They enable the packaging of these components as a single unit, along with necessary deployment descriptors, and are typically deployed to Java EE application servers like Oracle WebLogic or IBM WebSphere.
+Maven Directory Structure
+Maven is not an executable software but an archive file used for project management in Java. To download it, you can access the Apache Maven website and choose either the source or binary zip file—source files allow for modifications to the software's functionality, while binary files enable usage without changes. The Maven directory structure includes several important directories:
+1.	Bin: This directory contains all the binary files, with the most crucial being the mvn file, which is used to execute Maven goals such as mvn clean package or mvn build.
+2.	Conf: Here, all configuration files related to Maven are stored, with settings.xml being the primary file where configurations can be modified.
+3.	Lib: This directory holds all the JAR files required for Java projects, providing the necessary libraries.
+4.	Boot: The boot directory includes JAR files that are utilized when running Maven scripts.
+Additionally, the target directory serves as the default output location for build artifacts, including compiled classes and packaged JAR/WAR files, while the pom.xml file, known as the Project Object Model (POM), contains crucial configuration information and dependencies for the project. In Maven, pom.xml file contains our package name, group id , versions and package file names. It also contains all of the dependencies which are imperative for the package.
+
+We can change the local repo in Maven  In the setting.xml file we have to figure out the place <path/to/local/directory> and we have to replace it with the path of our customlocalrepo. Similarly, we have to uncomment it.
+Maven Repositories
+Maven uses three types of repositories to manage project dependencies effectively.
+1.	Maven Local Repository: This is a local repository on the developer's machine, storing all project dependencies. By default, it is located at ~/.m2/repository on Linux, /Users/Sohail/.m2/repository on macOS, and C:\users\DELL\.m2\repository on Windows.
+2.	Maven Central Repository: Provided by the Maven community, this repository contains a vast collection of commonly used libraries. It is utilized when Maven cannot find the required libraries in the local repository.
+3.	Remote Repository: Organizations often maintain their own remote repositories for libraries used in projects. Unlike the local repository, a remote repository is hosted on a separate server and is accessible within the organization, allowing for better management and sharing of dependencies.
+Life Cycle of Maven:
+•	1-Clean  Goal name of Clean Life Cycle is 'Clean'. It will delete the previous build files. 
+•	2- Site Goal of Site Life Cycle is 'Site'. It generates the documentation of the source code.
+•	3- Default  Default is the third life cycle of Maven. 
+1.	'Validate' is the first goal of Default Life Cycle.  It validates the project directory structure. It will check the files which must be present. 
+2.	'Compile' is the 2nd goal of Default Life Cycle. It is used to compile the Source Code. 
+3.	'test' is the 3rd goal of Default Life Cycle. It tests the junit test cases. 
+4.	'package' is the 4th goal of Default Life Cycle. It creates the package [jar, war, ear] or Build Artifacts
+5.	'install' is the 5th goal of Default Life Cycle. It stores the package into maven local repo. 
+6.	'deploy' is the 6th goal of Default Life Cycle.  It stores the package into remote repo.
+
+mvn install:The mvn install command compiles the project's source code, packages it into a JAR, WAR, or other artifact (depending on the project type), and installs it into the local Maven repository.
+mvn deploy:The mvn deploy command performs all the tasks of mvn install, but it goes a step further by deploying the project's artifact to a remote repository (such as Nexus, Artifactory, or a custom repository manager).
+Maven Commands:
+•	mvn package ==> To create a package
+•	mvn clean  ====> To delete the already build file
+•	mvn clean package ==> To delete the already build files and create a new package. 
+•	mvn test ==> It will test the maven test cases.
+How to change the local repo?
+•	go to your home directory 
+•	mkdir localcustomrepo
+•	now you have to go to your setting.xml file
+•	cd /opt/maven/conf/
+•	vi setting.xml
+•	localrepo>/root/maenlocalustomrepo<localrepository>
+•	mvn clean package -pl Mavenenterprise-web
+Difference Between ANT and MAVEN:
+•	ANT does not has formal conventions, so we need to provide information of the project structure in build xml file. 
+•	ANT is procedural, you need to provide information about what to do and when to do through code. 
+•	There is no lifecycle in ANT. 
+•	It is a tool box. 
+•	It is mainly build tool
+•	It is less prefered than Maven
+•	Maven has a convention to place source code, compiled code etc. So, we don't need to provide information about the project struture in pom.xml file. 
+•	Maven is declarative, everything you define is the pom.xml file. 
+•	There is a life cycle in Maven
+•	It is a framework. 
+•	It is mainly a project Management Tool
+•	It is more preferred in the Production Environment. 
+SonarQube:
+1.	Vendor = Sonar
+2.	Tool Name = SonarQube
+3.	Open Source
+4.	OS ==> Cross Platforms can be run on all Platforms - Windows, Linux, MAC
+5.	It is not an executable tool. 
+6.	Current Version = 
+7.	It is developed in Java Language. However, it supports more than 25 Languages. 
+8.	Tomcat/Jboss/Maven ==> Developed in Java and Supported by Java
+9.	SonarQube/Nexus/Jenkins ==> Developed in Java Language but supports many there languages. 
+10.	Similarly, Nexus/Jenkins also developed by Java and supported many other languages. 
+11.	It supports multiple databases, [MYSQL, Oracle,]
+SonarQube is an open-source static code analysis tool designed for continuous inspection of code quality. It facilitates automatic reviews through static analysis, detecting bugs, code smells, and security vulnerabilities across 25+ programming languages. Code review involves reading and analyzing code line by line to ensure it meets the specified requirements. In a peer-to-peer code review, one developer writes the code, another checks it for errors, and a third validates the findings, promoting collaborative quality assurance and improved coding standards among team members.
+Objective of SonarQube:
+SonarQube provides visualizations and reports to help you understand code coverage metrics, identify areas of low coverage, and prioritize improvements to your test suite. It encourages developers to write more comprehensive tests to improve overall code quality and reduce the risk of bugs and vulnerabilities.
+Unit Test Cases:
+In SonarQube, a unit test case refers to a specific test designed to verify the correctness of a small, isolated portion of code, typically a single function, method, or class. Unit testing is a crucial aspect of software development aimed at ensuring that individual units of code behave as expected and meet their requirements.
+What SonarQube does?
+•	Bugs
+•	Vulnerabilities
+•	Minor bugs
+•	Major bugs
+•	Solutions
+•	Duplicated code
+•	Coding standards
+•	Unit tests
+•	Complex code
+•	Comments
+•	Potential Bugs
+[A report will be published with all the vulnerabilities, and how these vulnerabilities will be resolved.]
+Code Coverage: Code coverage in SonarQube measures the extent to which your source code is tested by automated tests, serving as a metric for evaluating the effectiveness of your test suite. It is calculated by analyzing the results of tests, such as unit and integration tests, and comparing them to the lines of code in your codebase. High code coverage is directly proportional to the number of unit test cases—more test cases typically lead to higher coverage. A high percentage indicates that a significant portion of the code is exercised by tests, enhancing confidence in software reliability. Conversely, low coverage highlights inadequately tested areas, increasing the likelihood of defects. In production environments, maintaining a minimum code coverage of 80% is recommended, as developers create unit test cases to ensure quality. A code coverage of 0% signifies that no unit tests have been performed, underscoring potential risks in the codebase.
+
+Brief Intro of SonarQube:
+Introduction
+•	SonarQube (previously called Sonar) is an open-source software quality management tool.
+•	It will continuously analyze and measure the quality of the source code. Its default port is 9000
+•	I will generate the report if any issues in HTML format/PDF format.
+•	It is a web-based tool that supports multiple languages (Java, C#, JS ...)
+•	It will support multi OS platform (Windows. MAC, Linux...).
+•	It will support multiple databases (MySQL, Oracle, Microsoft SQL Server, PostgreSQL ... ==> Relational Databases)-SonarQube Supports Relational Databases
+•	Supports multiple browsers (IE, Microsoft Edge, FF, Chrome, Safari)
+•	It will identify the below category of issues.
+•	Duplicated code
+•	Coding standards
+•	Unit tests
+•	Complex code
+•	Comments
+•	Potential Bugs
+
+Databases Supported:
+The reports of databases will be stored in the external databases. However, there is an internal database which is internally configured. All of the data is stored in this database by default. Four databases are supported by SonarQube.MySQL, Oracle, Microsoft SQL Server, PostgreSQL
+Sonar service is not starting?
+•	Make sure you need to change the ownership and 
+•	Group to /opt/sonarqube/ directory for sonar user.
+•	make sure you are trying to start sonar service with sonar user.
+•	check java is installed or not using java -version command.
+•	Unable to access SonarQube server URL in browser?
+•	a)make sure port 9000 is opened in security groups 
+-	AWS ec2 instance
+SonarQube Workflow: And COmponents
+•	The workflow of SonarQube involves a scanner that analyzes the source code, producing a report that is passed to the SonarQube Server. This server has several key components: the Compute Engine (CE), which processes the report, identifies vulnerabilities, and categorizes them as bugs, code smells, or security risks. It then stores these issues in an integrated database or the H2 database. The Web Server hosts the SonarQube dashboard, displaying the analysis results, including bug and vulnerability counts. A Search Engine is also available to help pinpoint specific issues within the code. SonarQube's comprehensive analysis helps developers maintain code quality and address potential issues efficiently.
+Package.Json in NodeJS:
+In NodeJS, all project dependencies are managed in the package.json file, which specifies the required libraries and tools to run the project. Similar to how Java projects use pom.xml to manage dependencies, package.json details everything needed for NodeJS projects. To install these dependencies, navigate to the directory containing the package.json file and execute the command npm install. This command downloads and installs all listed dependencies, preparing the project environment for execution. This ensures that the project has all the necessary packages to function correctly.
+SonarQube Concepts:
+In SonarQube, Issues represent all identified bugs, vulnerabilities, and code smells detected during code analysis. These are assessed based on predefined Rules, which set the standard criteria for evaluating code quality across various programming languages. Users can customize these rules to suit specific needs, creating their own rule sets. These custom rules are grouped under a Quality Profile, which acts as a benchmark for evaluating code. To apply a customized Quality Profile, navigate to the project's settings and switch to the desired profile. The pass or fail criteria for a project are defined by the Quality Gate, which acts as a final checkpoint. If any condition within a Quality Gate fails (like code coverage or bug count thresholds), the entire code is marked as failed. Custom Quality Gates can be created to fit specific project standards, ensuring that code meets the desired quality before approval.
+How to change the port and Context Path of SonarQube?
+•	If we want to change the port of our SOnarQube Server due to port conflicts and we want
+•	to change the context path as per the requirements of the clients. 
+•	cd /opt/sonarqube/conf
+•	vi sonar.properties
+•	uncomment 
+•	sonar.web.context=/anyword
+•	sonar.web.port=8000
+•	retart the SonarQube Server
+Why we change Context Path/Ports?
+•	Conflict in Ports with Jenkins etc. 
+•	For Security Purposes 
+•	Client's Requirements
+Report Generation Plugins:
+Cnes, bitegarder
+
+Yaml Language:
+YAML (Yet Another Markup Language) is a lightweight and human-friendly language, widely used in automation tools like Docker Compose, Kubernetes Manifests, GitHub Actions, and Azure Pipelines. It relies heavily on indentation, and proper spacing is crucial—tabs are not allowed, only spaces should be used for formatting. In YAML, data is represented in a key-value pair format, making it easy to read and write. For example, you can define values like name: Sohail or list items using indentation, such as devopstools: [git, github, tomcat, maven]. YAML's simplicity allows seamless editing in code editors like VS Code. It supports both simple data structures (key-value pairs) and complex ones like arrays and nested dictionaries. Additionally, YAML is a preferred choice in DevOps due to its readability, straightforward syntax, and the ability to handle complex configurations effortlessly.
+
+
+Ansible:
+Ansible utilizes a Push-Based Architecture, meaning the Ansible server initiates and "pushes" configurations directly to the target hosts. This contrasts with Pull-Based Architecture, seen in tools like Chef, where managed nodes (hosts) continuously "pull" updates from a central master server when changes occur. In a Push-Based setup, Ansible controls deployments centrally without needing agents on the target machines, making it efficient and easy to manage. This approach leverages SSH for communication with Linux servers and WinRM for Windows, facilitating seamless management across environments, whether public or private clouds. It simplifies configuration management by enabling the Ansible server to deploy changes to multiple machines simultaneously, making it a popular choice for automation tasks.
+Ansible Architecture:
+Ansible's architecture consists of several key components. The Host Inventory is a file that lists all the servers Ansible manages, typically located at /etc/ansible/hosts. Playbooks are YAML scripts containing configuration tasks and instructions to automate processes. Ansible relies on Core Modules—pre-built components included in playbooks for common tasks. Additionally, Custom Modules can be created for specialized needs. Plugins enhance Ansible's functionality, with types including Connection Plugins (managing connections via SSH, paramiko, etc.), Filter Plugins (processing and modifying data within playbooks), and Inventory Plugins (managing inventory from sources like AWS or GCP). This modular structure allows Ansible to be versatile and easily adaptable for different automation requirements.
+
+Scripts are known as Playbooks in Ansible. ansible all -m ping  ==> Command is used to check the availability of all hosts.
+Modules in Ansible:
+In Ansible, various modules are designed to perform tasks similar to common Linux commands. For instance, the ping module in Ansible functions like the Linux ping command to check connectivity. The user module is used for managing users, similar to the useradd command. Package management is handled with modules like yum for Red Hat-based systems and apt for Debian-based systems, mirroring the Linux yum and apt commands. File copying tasks are managed with the copy module, equivalent to the cp command. The debug module is similar to echo for displaying messages or variables. Additionally, the get-url module is comparable to wget, allowing for file downloads from URLs. These modules provide an Ansible-centric way to execute standard Linux tasks.
+Commands of Modules:
+In Ansible, a module is a small program, often written in Python, that performs specific actions on a local machine, API, or remote host. Each module includes metadata that specifies when and where an automation task runs and who is authorized to execute it. To explore available modules, the ansible-doc -l command provides a list of all available modules. For details on any specific module, use ansible-doc nameofmodule. For example, ansible-doc yum and ansible-doc apt will show information about the yum and apt modules, respectively, giving insights into their usage and options. These commands help in understanding and effectively utilizing Ansible's vast module ecosystem for automation tasks.
+Host Inventory File is placed - /etc/ansible/hosts
+Installation of Apache:
+To install httpd on all available servers using Ansible, the command is ansible all -b -m yum -a "name=httpd". However, if you prefer not to target all servers, you can specify a group or specific hosts. For example, to install httpd on a group of servers called webservers, use ansible webservers -b -m yum -a "name=httpd". To target multiple groups, such as webservers and databases, the command is ansible webservers:databases -b -m yum -a "name=httpd". You can also target a single IP address with ansible 192.168.1.10 -b -m yum -a "name=httpd" or multiple specific hosts like ansible host1:host2 -b -m yum -a "name=httpd". For a single host, use ansible host1 -b -m yum -a "name=httpd".
+
+Some Commands of Ansible Modules:
+•	ansible localhost -m shell -a date: Runs the date command on the local machine.
+•	ansible all -m shell -a df: Executes the df command to check disk space on all servers.
+•	ansible all -m shell -a 'df -h': Executes df -h to display disk space in human-readable format on all servers.
+•	ansible all -m shell -a "cat /etc/*release": Displays the OS release information on all servers.
+•	ansible all -b -m yum -a "name=httpd": Installs the httpd package (Apache web server) on all servers with root privileges.
+•	ansible webservers -b -m yum -a "name=httpd": Installs httpd on the webservers group with root privileges.
+•	ansible webservers:databases -b -m yum -a "name=httpd": Installs httpd on both webservers and databases groups.
+•	ansible 192.168.1.10 -b -m yum -a "name=httpd": Installs httpd on a server specified by IP address with root privileges.
+•	ansible host1:host2 -b -m yum -a "name=httpd": Installs httpd on multiple specified hosts with root privileges.
+•	ansible host1 -b -m yum -a "name=httpd": Installs httpd on a specific host with root privileges.
+•	ansible all -m shell -a "service status httpd": Checks the status of the httpd service on all servers.
+•	ansible all -b -m service -a "name=httpd state=started": Starts the httpd service on all servers with root privileges.
+•	ansible all -b -m systemd -a "name=httpd enabled=true": Enables the httpd service to start at boot on all servers with root privileges.
+•	ansible all -b -m yum -a "name=httpd state=absent": Uninstalls the httpd package from all servers with root privileges.
+•	ansible all -m copy -a "src=devops.txt dest=/tmp/devops.txt": Copies the devops.txt file from Ansible server to /tmp/devops.txt on all servers.
+•	ansible all -m shell -a "ls /tmp": Lists the contents of the /tmp directory on all servers.
+•	ansible all -m file -a "path=/path/to/your/file.txt state=absent": Removes the specified file from all servers.
+•	ansible all -m file -a "path=/tmp/sohail.txt state=absent": Deletes the sohail.txt file from the /tmp directory on all servers.
+•	ansible localhost -m setup: Displays detailed system information of the Ansible server.
+•	Copy Module: Used to copy files directly to remote servers.
+•	Template Module: Used to copy files with the ability to pass variables or template values.
+What is Playbook:
+In Ansible, a playbook is a YAML file that automates IT processes by defining a series of tasks and configurations. The structure consists of Plays, which are sets of ordered tasks to execute on a target host, and each Task represents a specific action to perform, such as pinging a server. A playbook specifies the hosts to manage (e.g., all, localhost, specific groups) and what tasks to execute on them. Playbooks are powerful in managing configurations and system states in a simple, readable format. They can also skip fact-gathering for faster execution or limit operations to specific hosts. Ansible provides commands to validate playbooks, list hosts, list tasks, check syntax, or perform a dry run without real-time impact.
+Commands and Descriptions:
+•	ansible-playbook playbookname --help: Provides information about available options and switches for the playbook.
+•	ansible-playbook playbookname --list-hosts: Lists the hosts that will be targeted by the playbook.
+•	ansible-playbook playbookname --list-tasks: Displays all tasks defined within the playbook.
+•	ansible-playbook playbookname --syntax-check: Checks the playbook for syntax errors without running it.
+•	ansible-playbook playbookname --check: Performs a dry run, simulating the playbook execution without making actual changes.
+Ansible Variables:
+In Ansible playbooks, variables can be utilized to make the automation processes more dynamic and adaptable. There are three primary methods to call variables within a playbook. Firstly, variables can be referenced using double curly brackets, denoted as {{ Variable_Name }}. For instance, you can display a message such as "Welcome to {{ companyname }} located in {{ location }}". Secondly, the Copy module is employed to replicate files as they are, without any modifications. Lastly, the Template module allows for the integration of variables while copying files, making it particularly useful for customizing files like an index.html page. This module enables the substitution of placeholder values within the file, thus changing the content dynamically based on the variables defined in the playbook. By leveraging these capabilities, playbooks can be tailored to different environments and configurations seamlessly,
+To call variables from an external file, the vars_files directive is used to include a vars.yaml file, which centralizes variable definitions. For real-time variable assignment, the -e switch can be employed during the playbook execution, enabling the user to pass variable values dynamically, such as ansible-playbook playbook.yml -e 'companyname=ABC location=XYZ'. When combining these methods, the priority for variable resolution is: first, runtime values; second, variables from the specified YAML file; and third, those defined within the playbook itself. This hierarchical approach allows for flexibility and adaptability across different environments, such as development and production, where different variable files like dev_vars.yaml and prod_vars.yaml can be referenced based on the environment specified (e.g., ansible-playbook playbook.yml -e env=dev). Overall, understanding the variable management in Ansible is vital for efficient playbook design and deployment.
+debug acts as the function of echo command in linux echo - displays the output of any variable. As echo runs the variables and does the same.
+In debug Module what is the difference between var and msg? var: We can display only variables values and msg: we can display customized message along with the variable value.
+Handlers:
+Handlers in Ansible are special tasks designed to be executed at the end of a playbook run, but only if they are triggered or "notified" by other tasks. A play typically refers to the set of tasks defined in an Ansible playbook, which are executed sequentially to configure systems or deploy applications. Handlers are often used to perform tasks that depend on changes made by earlier tasks, such as restarting a service after configuration files have been modified. If a task notifies a handler, the handler will run at the end of the play, but if no notification occurs, the handler is skipped
+Group_vars:
+The group_vars directory in Ansible is a powerful way to manage configurations for different groups of hosts. It allows you to create separate YAML files, each associated with a specific group of servers, enabling targeted variable definitions. For example, in a scenario where different server groups require different Java versions, you can create dbservers.yml and appservers.yml within the /etc/ansible/group_vars directory to specify the Java versions for each group. Ansible will automatically pick up these configurations when executing a playbook that targets those groups. Additionally, any server not belonging to a defined group will refer to all.yml within the same directory, ensuring a fallback configuration is available. This method simplifies complex deployments, maintains cleaner playbooks, and centralizes variable management, making it easier to adapt to diverse environments.
+Host Vars:
+The host_vars directory in Ansible is used to define variables for individual hosts, allowing you to specify host-specific configurations similar to how group_vars works for groups of hosts. In the /etc/ansible/host_vars directory, you can create YAML files named after each host's IP address or hostname, containing variables tailored for that specific host. For instance, if a particular server requires a unique Java version, you would create a file like 10.20.26.2.yml with the desired configuration. Ansible will automatically reference the variables in these files when targeting the specific host, ensuring fine-grained control over host configurations while keeping the playbooks clean and reusable. If we have added the same IP Address in All.yaml and made a file IP Address.yaml, Priority of IP Address.yaml will be higher.
+How we can run a command on any server by sitting on Ansible Server? ansible IP-Address-of-remote-server -m shell -a 'java -version'
+Loops in Ansible:
+Loops in Ansible streamline the process of performing repetitive tasks, making configuration management more efficient and reducing manual effort. Instead of individually specifying multiple installations or configurations, you can use loops to iterate over lists, ensuring consistency across deployments. This is particularly useful when managing multiple servers or creating multiple resources like users. Additionally, Ansible supports conditional statements, like using the when directive to target different Linux distributions, ensuring that tasks are executed only when the criteria match—such as installing httpd on RHEL servers and apache2 on Ubuntu servers. This combination of loops and conditions makes Ansible flexible for managing diverse environments and large-scale automation.
+Tags in Ansible:
+Tags in Ansible allow you to selectively run or skip specific tasks in a playbook, making it efficient to manage complex configurations without executing the entire playbook. By assigning tags to individual tasks, such as install, start, or copy, you can focus on specific sections, reducing the execution time and targeting only what's necessary. This flexibility is particularly useful when dealing with large-scale playbooks involving many tasks. You can list all tags in a playbook using ansible-playbook playbookname --list-tags, run specific tags with ansible-playbook playbookname --tags "tag1, tag2", or skip tasks using ansible-playbook playbookname --skip-tags "tag".
+Roles:
+Roles in Ansible are a way to modularize and reuse tasks, configurations, and settings, making it easy to manage complex deployments. A role functions like a reusable block of code in programming, allowing you to define specific configurations—such as installing a web server—in a structured way. When creating a role using ansible-galaxy init rolename, a standard directory structure is generated, including folders like tasks, vars, handlers, templates, and files. Each directory serves a specific purpose, organizing files, variables, templates, and handlers. This structured approach simplifies maintenance, promotes reusability, and ensures consistency across multiple playbooks by referencing the same role wherever needed. You integrate a role into a playbook by simply listing it under the roles section, making deployments easier to manage and scale.
+•  ansible-galaxy init rolename - This command creates a new role with a predefined directory structure, e.g., ansible-galaxy init httpserver initializes a role named "httpserver."
+•  ansible-playbook playbookname.yml - Runs an Ansible playbook that includes roles, such as ansible-playbook roles.yaml to execute a playbook referencing a role.
+•  ansible-galaxy list - Displays a list of all roles currently installed in the Ansible environment.
+•  ansible-galaxy remove rolename - Deletes an existing role from the system, like ansible-galaxy remove httpserver to remove the "httpserver" role.
+Ansible Vault:
+Ansible Vault is a tool used to encrypt sensitive information such as credentials, passwords, or tokens, ensuring secure storage and usage within playbooks. This tool allows for safe management of secrets directly in version-controlled files without exposing them. In comparison, HashiCorp Vault is another popular solution in the market that provides comprehensive secret management and dynamic secrets generation for infrastructure automation tools like Terraform and Packer. In Ansible, you can use encryption, decryption, and editing operations with Vault, enhancing security in server-client communication via SSH keys, PEM keys, or username-password pairs.
+Here are some useful Ansible Vault commands:
+1.	ansible-vault encrypt <file> - Encrypts a file, ensuring credentials are secure.
+2.	ansible-vault decrypt <file> - Decrypts an encrypted file, making it readable.
+3.	ansible-vault edit <file> - Opens an encrypted file for editing while keeping it secure.
+4.	ansible-playbook <playbook> --vault-password-file=<file> - Runs a playbook using a stored password for Vault encryption.
+Ansible Static and Dynamic Inventory:
+In Ansible, a Static Inventory File (e.g., /etc/ansible/hosts) is a manually maintained list of host IP addresses or hostnames that Ansible uses to execute tasks. It's considered static because the entries do not automatically update or reflect changes in the infrastructure, which can lead to discrepancies over time. In contrast, a Dynamic Inventory uses scripts (such as Python, Shell, or YAML) to automatically fetch host details and IP addresses from external sources, providing real-time data about the infrastructure. This is particularly useful in cloud environments where instances can be created or terminated frequently.
+
+Nexus:
+Nexus, developed by Sonatype, is a popular open-source artifact repository manager that plays a crucial role in managing binary artifacts like libraries and dependencies in the software development lifecycle. Unlike GitHub, which is a source control management (SCM) platform primarily focused on hosting source code and facilitating collaboration through version control, Nexus serves to store and manage the various packages generated during the development process. It provides a centralized repository for teams to share reusable components, ensuring consistent access to dependencies and improving build performance. Nexus supports multiple package formats, including Maven, npm, Docker, and NuGet, making it essential for efficient dependency management, build reproducibility, and governance of artifact usage in projects. In summary, while GitHub focuses on code collaboration and version control, Nexus is dedicated to the storage, management, and retrieval of binary artifacts, enhancing overall development workflows.
+Installation of Nexus requires Java and involves creating a dedicated user for security purposes. It is crucial to set appropriate permissions for the Nexus directories and configure it as a service for easy management. Nexus supports various repository formats, including Maven, npm, and Docker, and allows the creation of hosted, snapshot, remote, and proxy repositories for effective dependency management. Additionally, users can set deployment policies to control how artifacts are handled in different repositories, with snapshot repositories retaining all versions and release repositories replacing previous versions upon deployment. Nexus also supports security configurations, user roles, and integration with LDAP for authentication, enhancing collaboration across teams. Logs can be viewed within Nexus, providing insights into system performance, while clean-up policies help manage storage effectively. Furthermore, users can encrypt passwords for enhanced security in Maven by utilizing the mvn --encrypt-password command, which allows for secure management of sensitive credentials.
+Difference between Docker Hub and Nexus:
+Nexus and Docker Hub are used for managing artifacts, Nexus is a more general-purpose artifact repository that supports a wide range of formats, while Docker Hub is specifically focused on Docker images. Organizations often use both in their workflows, with Nexus managing various types of dependencies and Docker Hub being the go-to for container images.
+Tomcat:
+Apache Tomcat is an open-source, Java-based web application server that requires Java as a prerequisite. It operates on port 8080 by default and can be accessed via a web browser at http://IP_Address:8080. Tomcat's directory structure includes the bin directory for binary files like startup.sh and shutdown.sh, the conf directory for configuration files such as server.xml and tomcat-users.xml, the lib directory for Java libraries, the logs directory for log files (notably catalina.out for troubleshooting), the webapps directory for deploying applications, the work directory for compiled files, and the temp directory for temporary files. To install Tomcat, ensure a compatible Java version, install necessary packages, download and unzip Tomcat, and create symbolic links for startup and shutdown scripts. User access is managed through tomcat-users.xml, and roles can be assigned for different access levels. Ports can be changed in server.xml if necessary. Deployment can be achieved by placing WAR files in the webapps directory, using the Tomcat Manager application, or through context paths. Performance tuning includes increasing the heap size via a setenv.sh script in the bin directory.
+Difference between Hot Fix and Hot Deployment in Tomcat:
+A hot fix is a patch applied to a running software system, like Apache Tomcat, to address specific issues or bugs without requiring a complete shutdown, often necessitating a restart of certain components. In contrast, hot deployment allows the deployment or updating of web applications (WAR files) on a running server without interruption, automatically replacing the old version while maintaining ongoing operations. Both aim to minimize downtime but focus on different aspects of server maintenance.
+Web Server:
+A web server serves as a crucial intermediary between clients and servers, facilitating the delivery of websites on the internet. Its primary function is to handle multiple simultaneous user requests for different web pages, efficiently pulling content from the server and converting files written in various programming languages, such as PHP, Python, and Java, into static HTML. This transformation allows the web server to deliver the content to users’ browsers, ensuring effective server-client communication. The ability to process requests from many users at once, while managing diverse content types, is one of the key challenges faced by web servers, making them essential for the smooth operation of the web.
+Website  technically it is a folder which has multiple files. In those files, one is index.html. Index.html is a landing page where customer lands. In this page we have further maintained the content or logics. All other files are associated with this file. 
+For Web Hosting we have Hardware+OS+ Applications. Hosting Web Servers use the applications for web hosting. Web Server hosting application is Apache/Nginx/Microsoft IIS/ Apache Tomcat  For Java applications
+How Apache Server Works: Apache server receives the requests of the users and respond.All the required files will be fetched from the target server and HTTP response will be sent back. Response will contain [Index.html file, css file, and java script files]
+While Migration which Needed:
+The migration of 10 applications from customer data centers to the cloud involves assessing the reasons for migration, existing application issues, and scaling needs. Key steps include evaluating current server specifications, identifying performance bottlenecks, selecting appropriate AWS EC2 instance types based on application requirements, and assessing costs. Ensuring proper resource allocation and monitoring is crucial for a successful transition.
+How to optimize your compute infrastructure on AWS, follow these steps:
+1.	Assess Current Usage: Analyze your existing resource utilization and performance metrics.
+2.	Right-Sizing: Choose the appropriate EC2 instance types and sizes based on workload requirements.
+3.	Auto-Scaling: Implement auto-scaling to dynamically adjust resources based on demand.
+4.	Leverage Spot Instances: Use spot instances for cost savings on non-critical workloads.
+5.	Monitoring and Alerts: Set up monitoring with Amazon CloudWatch to track performance and costs continuously.
+How to optimize your storage infrastructure on AWS, follow these steps:
+1.	Analyze Data Usage: Assess your current storage patterns and identify underutilized resources.
+2.	Choose Appropriate Storage Classes: Use S3 intelligent tiering, EBS gp3, or Amazon Glacier for cost-effective storage solutions based on access frequency.
+3.	Implement Lifecycle Policies: Set up automated lifecycle rules to move or delete data as needed.
+4.	Enable Data Compression: Use AWS services that support compression to save space.
+5.	Monitor Costs: Utilize AWS Cost Explorer to track and analyze storage costs regularly.
+Scaling Types:
+Scheduled Scaling adjusts resources based on a predefined schedule, allowing businesses to prepare for known traffic patterns. Predictive Scaling uses machine learning to anticipate future resource needs based on historical data, automatically adjusting capacity ahead of demand. Dynamic Scaling responds in real-time to current traffic, scaling resources up or down based on immediate usage metrics, ensuring optimal performance and cost efficiencyformation.
+In AWS, a NAT Gateway allows instances in a private subnet to access the internet for outbound traffic while preventing inbound traffic, enhancing security. It's useful for resources needing internet access for updates or APIs without exposing them publicly. In contrast, an Internet Gateway connects a VPC to the internet, enabling inbound and outbound traffic to/from instances in public subnets. This allows resources to be publicly accessible while ensuring secure communication
+Setting Up Jump Server/Bastian Host:
+To set up a secure architecture in AWS, a Bastion host (or Jump Server) is configured in a public subnet to access EC2 instances in private subnets. This involves creating a VPC, public and private subnets, and routing tables. The Bastion host connects to the private EC2 instance via SSH using a key pair. To enable internet access for private instances, a NAT Gateway is deployed in the public subnet. This allows outbound internet traffic while keeping private instances secure.
+How DNS Works?
+When a domain request is made, it first checks the local cache for an IP address. If not found, the query is sent to the Local DNS Server, which queries the Root DNS Server for the .com domain. It then queries the TLD DNS Server for example.com, followed by the SLD DNS Server or Authoritative DNS Server, which provides the A record for the requested site. The Local DNS Server caches this IP address and responds to the original request. This process enhances efficiency and reduces latency in subsequent requests.
+Route 53:
+Amazon Route 53 is a scalable Domain Name System (DNS) web service designed for high availability and low latency. Key terminologies include Hosted Zones, which are containers for DNS records, Record Sets, which define how traffic is directed for a domain, and Health Checks, used to monitor the availability of resources. Route 53's objectives include domain registration, DNS routing, and providing health-checking capabilities, ensuring that users are directed to the nearest and most reliable resources, thus enhancing application performance and availability.
+S3 Cross-Region Replication:
+Amazon S3 Cross-Region Replication (CRR) is a feature that enables automatic, asynchronous copying of objects across different AWS regions. This allows you to store your data in multiple locations for improved availability and disaster recovery. Key benefits include enhanced data durability, compliance with data sovereignty laws, and quicker access for global users.
+•	Standard-IA (Infrequent Access): Objects can be moved to Standard-IA after 30 days of being stored.
+•	Intelligent-Tiering: Objects transition to Intelligent-Tiering after 70 days if they are not accessed.
+•	Glacier: Objects can transition to Glacier after 180 days.
+•	Glacier Deep Archive: After 365 days, objects can transition to Glacier Deep Archive.
+•	Expiration: Objects can expire and be deleted after 700 days.
+VPC endpoints
+Amazon VPC endpoints enable private connections between your VPC and AWS services without requiring internet access, reducing latency and enhancing security. They prevent the need for Internet Gateways (IGW), VPNs, or NAT devices. There are two types: Gateway Endpoints for S3 and DynamoDB, which are free and do not require security groups, and Interface Endpoints, which provide private IP addresses, require security groups, and incur costs. VPC endpoints ensure reliable communication within AWS, addressing performance, cost, and security issues associated with internet access.
+AWS Network Firewall:
+AWS Network Firewall is a managed service that provides network security for VPCs. It enables you to set up firewall rules and policies to control both inbound and outbound traffic. The architecture includes stateful and stateless rule engines, allowing inspection and filtering of network packets. Policies define how rules are applied, and you can use pre-configured or custom rules to handle threats like IP blocklists, domains, or protocols. Integrated with AWS services like CloudWatch and VPC Flow Logs, AWS Network Firewall offers scalability, high availability, and centralized management to ensure comprehensive network protection within AWS environments.
+AWS WAF:
+AWS WAF (Web Application Firewall) is a security service designed to protect web applications against threats like SQL injection, XSS, and DDoS attacks. It operates by filtering HTTP/HTTPS traffic using customizable rules. AWS WAF can be deployed with Amazon CloudFront, Application Load Balancer (ALB), or API Gateway. Rules are grouped into Web ACLs (Access Control Lists), which consist of allow, block, and count actions. Managed rule sets provide pre-configured protection, while custom rules can be created for specific needs. Integrated with AWS Shield, AWS WAF ensures scalable, real-time protection, logging, and monitoring through CloudWatch for comprehensive threat visibility.
+Difference between Network Level Firewall and Web Access Firewall:
+AWS WAF protects web applications from common attacks like SQL injection or XSS by filtering HTTP/HTTPS traffic. AWS Network Firewall secures your VPC, offering deeper network protection with stateful inspection, intrusion detection, and prevention. WAF is for web-layer threats, while Network Firewall handles broader VPC-level security.
+RDS:
+Databases are categorized into Relational and Non-Relational types. Relational Databases resemble Excel spreadsheets with structured tables using rows and columns, requiring a fixed schema. They support SQL-based querying, are ideal for OLTP (Online Transaction Processing) systems, and use primary and foreign keys to manage relationships. Examples include Amazon RDS, Aurora, and Redshift. In contrast, Non-Relational Databases store data in a flexible format, like JSON, without a fixed schema, making them suitable for OLAP (Online Analytical Processing) applications. They prioritize scalability (horizontal) and performance for large datasets; examples are DynamoDB and ElastiCache. Choosing the right database depends on factors like data structure, read/write balance, scalability, and throughput requirements.
+In RDS, Read Replicas offer performance optimization by asynchronously replicating data, allowing up to 5 replicas within and across regions. They are used for read-heavy workloads, with reads being eventually consistent. RDS Multi-AZ provides high availability and disaster recovery, featuring synchronous replication and automatic failover to a standby instance in case the primary database fails. This ensures minimal disruption and continuity. Understanding these concepts is crucial for architecting efficient database solutions in AWS.
+• A Read Replica is a duplicate of your primary database instance that is designed for read-only operations.  It is primarily used to offload read traffic from the primary database to handle read-heavy workloads.
+Read-heavy workloads refer to applications or systems where the majority of database operations involve reading or retrieving data, rather than writing or updating it. In such scenarios, the focus is on fetching and displaying information, and the volume of read operations (SELECT queries) is significantly higher than the volume of write operations (INSERT, UPDATE, DELETE). In a read-heavy environment, database performance can be optimized by offloading the read requests to Read Replicas, allowing the primary database to handle a smaller load and focus on write operations if needed. This improves response times, enhances user experience, and scales the application more efficiently.
+A schema in the context of databases is the structured layout or blueprint that defines how data is organized within a database. It specifies the tables, fields, relationships, constraints, and other elements that make up the database structure. Essentially, the schema acts as a map that tells the database how data is stored, connected, and interacted with.
+Schemas provide a clear framework for how data is organized, ensuring consistency and making it easier to understand, manage, and query the data. In relational databases, schemas help maintain data integrity and enforce rules for data relationships. They are crucial for defining the structure and organization of complex databases, making it easier for developers and database administrators to interact with the data.
+Can we use S3 or EFS as a Database in AWS? Using Amazon S3 or Amazon EFS (Elastic File System) as a database is generally not recommended, as they are designed for different purposes. S3 lacks built-in querying capabilities and transactional support, which are crucial for traditional databases. EFS can store files and data for applications, but it’s not optimized for database use. It doesn't provide database features like indexing, querying, or ACID transactions.
+Amazon Route 53:
+Amazon Route 53 is AWS’s scalable and highly available Domain Name System (DNS) web service, designed to route end-user requests to applications hosted on AWS and outside infrastructure efficiently. It provides DNS management, enabling you to register and manage domain names, and supports health checks to monitor the availability of endpoints, allowing for automated failover. Route 53 also includes various routing policies like Simple, Weighted, Latency-based, Failover, Geolocation, and Multi-Value Answer, enabling customized traffic distribution and low-latency routing based on user location. Integrating seamlessly with other AWS services, Route 53 is especially beneficial for disaster recovery setups and offers robust security options, including private DNS for use within VPCs. Its tight integration with CloudFront and ELB further enhances the performance, making it a central component for DNS management and reliability across distributed architectures.
+•  Simple Routing: Routes traffic to a single resource. Ideal for basic setups with no special requirements.
+•  Weighted Routing: Distributes traffic across multiple resources based on assigned weights, allowing gradual deployment or testing.
+•  Latency-based Routing: Directs users to the region with the lowest latency, optimizing response times.
+•  Failover Routing: Redirects traffic to a standby resource if the primary resource fails, enhancing availability.
+•  Geolocation Routing: Routes users based on their geographic location, improving content relevance and compliance.
+•  Multi-Value Answer Routing: Returns multiple records for a single DNS query, allowing for load balancing and redundancy.
+Amazon ElastiCache: Amazon ElastiCache is a fully managed, in-memory data store service that enhances application performance by providing quick access to data. It supports two main caching engines: Redis and Memcached, allowing developers to offload database queries and store frequently accessed data in memory, which significantly reduces latency. By utilizing ElastiCache, applications can achieve faster response times, handle increased workloads, and improve scalability, making it ideal for use cases such as session management, real-time analytics, and caching frequently accessed objects. The primary objectives of ElastiCache include boosting application performance, reducing database load, and providing high availability through automatic failover and data replication.
+AWS Config:
+AWS Config is a fully managed service that provides visibility into the configuration of AWS resources. It allows users to track resource configurations, maintain a history of changes, and assess compliance with defined policies. AWS Config integrates with other AWS services to automate compliance checks, monitor changes, and facilitate governance, ensuring resources align with best practices.
+
+
+Kubernetes:
+Kubernetes is an open-source container management tool that automates container deployment, scaling, and load balancing. It manages isolated containers across virtual, physical, or cloud machines and is supported by top cloud providers as both a container orchestration and management tool, enabling automated deployments and self-healing capabilities. Google initially developed Kubernetes from internal systems "Borg" and "Omega" to manage its applications, releasing it as an open-source platform in 2014, written in Go and later donated to the CNCF. Kubernetes uses YAML and JSON manifests for configuration. Available online platforms for learning Kubernetes include Kubernetes Playground, Play with K8s, and Classroom. In cloud-native computing, Kubernetes facilitates building scalable applications across public, private, and hybrid clouds, with services like GKE (Google), AKS (Azure), and Amazon EKS. Tools like Minikube and Kubeadm simplify Kubernetes installation, addressing challenges in scaling containers, including communication, auto-scaling, and load balancing, which previously needed careful management.
+
+
+
+
+
+
+
+
